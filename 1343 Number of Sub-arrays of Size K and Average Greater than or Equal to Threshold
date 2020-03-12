@@ -1,0 +1,17 @@
+class Solution:
+    def numOfSubarrays(self, arr: List[int], k: int, threshold: int) -> int:
+        l=len(arr)
+        if l<k:
+            return 0
+        S=sum(arr[:k])
+        threshold*=k
+        if(S>=threshold):
+            res=1
+        else:
+            res=0
+        for i in range(l-k):
+            S+=arr[i+k]
+            S-=arr[i]
+            if(S>=threshold):
+                res+=1
+        return res
