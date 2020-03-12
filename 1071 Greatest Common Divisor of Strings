@@ -7,3 +7,4 @@ class Solution:
                 return ""
             str1=str1[len(str2):]
         return str1
+        
