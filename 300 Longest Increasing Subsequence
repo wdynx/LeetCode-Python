@@ -1,0 +1,19 @@
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        lst = []
+        for num in nums:
+            if len(lst)==0 or num>lst[-1]:
+                lst.append(num)
+            else:
+                left,right=0,len(lst)-1
+                while left<right-1:
+                    mid =(left+right) // 2
+                    if lst[mid]>=num:
+                        right=mid
+                    else:
+                        left=mid
+                if lst[left]>=num:
+                    lst[left]=num
+                else:
+                    lst[right]=num
+        return len(lst)
