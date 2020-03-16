@@ -1,0 +1,10 @@
+#52ms 87.20%
+
+class Solution:
+    def computeArea(self, A: int, B: int, C: int, D: int, E: int, F: int, G: int, H: int) -> int:
+        left=A if A>E else E
+        right=C if C<G else G
+        up=D if D<H else H
+        down=B if B>F else F
+        area=(right-left)*(up-down) if left<right and down<up else 0
+        return (C-A)*(D-B)+(G-E)*(H-F)-area
