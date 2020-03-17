@@ -1,0 +1,13 @@
+#64ms 82.43
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        dic,head,length={},0,0
+        for i,value in enumerate(s):
+            if value in dic and dic[value]>=head:
+                head=dic[value]+1
+            dic[value]=i
+            cur=i+1-head
+            if cur>length:
+                length=cur
+        return length
