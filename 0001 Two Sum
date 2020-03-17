@@ -1,3 +1,5 @@
+#56ms 70.85%
+
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         dic={}	//key:num	value:index
