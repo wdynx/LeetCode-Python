@@ -1,0 +1,16 @@
+class Solution:
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        dic={}
+        for s in ransomNote:
+            if s in dic:
+                dic[s]+=1
+            else:
+                dic[s]=1
+        for s in magazine:
+            if s in dic:
+                dic[s]-=1
+                if dic[s]==0:
+                    del dic[s]
+        if dic=={}:
+            return True
+        return False
