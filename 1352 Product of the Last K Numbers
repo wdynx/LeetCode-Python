@@ -1,0 +1,26 @@
+class ProductOfNumbers:
+
+    def __init__(self):
+        self.ls=[]
+        self.ans=[]
+
+    def add(self, num: int) -> None:
+        self.ls.append(num)
+        if num==0:
+            self.ans=[]
+        elif len(self.ans)==0:
+            self.ans.append(num)
+        else:
+            self.ans.append(self.ans[-1]*num)
+
+    def getProduct(self, k: int) -> int:
+        if len(self.ans)<k:
+            return 0
+        elif len(self.ans)==k:
+            return int(self.ans[-1])
+        else:
+            return int(self.ans[-1]/self.ans[-k-1])
+# Your ProductOfNumbers object will be instantiated and called as such:
+# obj = ProductOfNumbers()
+# obj.add(num)
+# param_2 = obj.getProduct(k)
