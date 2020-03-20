@@ -1,0 +1,31 @@
+class Solution:
+    def getLeastNumbers(self, arr: List[int], k: int) -> List[int]:
+        if k==0:
+            return []
+        ans=[]
+        for num in arr:
+            if len(ans)<k:
+                ans.append(num)
+                i=len(ans)-1
+                while i!=0:
+                    if ans[i]<=ans[(i-1)//2]:
+                        break
+                    else:
+                        ans[i]^=ans[(i-1)//2]
+                        ans[(i-1)//2]^=ans[i]
+                        ans[i]^=ans[(i-1)//2]
+                        i=(i-1)//2
+            else:
+                if num<ans[0]:
+                    ans[0]=num
+                    i=0
+                    while (i+1)*2-1<k and ans[i]<ans[(i+1)*2-1] or (i+1)*2<k and ans[i]<ans[(i+1)*2]:
+                        if (i+1)*2<k:
+                            j=((i+1)*2-1) if ans[(i+1)*2-1]>ans[(i+1)*2] else (i+1)*2
+                        else:
+                            j=(i+1)*2-1
+                        ans[i]^=ans[j]
+                        ans[j]^=ans[i]
+                        ans[i]^=ans[j]
+                        i=j
+        return ans
