@@ -1,0 +1,22 @@
+class Solution:
+    def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:
+        dict1={}
+        ans=[]
+        for i in arr1:
+            if i in dict1:
+                dict1[i]+=1
+            else:
+                dict1[i]=1
+        for i in arr2:
+            if i in dict1.keys():
+                while dict1[i]!=0:
+                    ans.append(i)
+                    dict1[i]-=1
+                del dict1[i]
+        keys=list(dict1.keys())
+        keys.sort()
+        for i in keys:
+            while dict1[i]!=0:
+                ans.append(i)
+                dict1[i]-=1
+        return ans
