@@ -1,0 +1,8 @@
+class Solution:
+    def canMeasureWater(self, x: int, y: int, z: int) -> bool:
+        if z==0:
+            return True
+        elif x*y==0 or z>x+y:
+            return False
+        else:
+            return not z%math.gcd(x,y)
