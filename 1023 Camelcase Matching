@@ -1,0 +1,32 @@
+class Solution:
+    def isUpper(self,x):
+        return x>='A' and x<='Z'
+    def match(self,query,pattern):
+        i,j=0,0
+        while i<len(query):
+            if j==len(pattern):
+                if self.isUpper(query[i]):
+                    return False
+                else:
+                    i+=1
+            elif self.isUpper(query[i]) and self.isUpper(pattern[j]):
+                if query[i]==pattern[j]:
+                    i+=1
+                    j+=1
+                else:
+                    return False
+            elif self.isUpper(query[i]) and not self.isUpper(pattern[j]):
+                return False
+            elif not self.isUpper(query[i]) and self.isUpper(pattern[j]):
+                i+=1
+            else:
+                if query[i]==pattern[j]:
+                    j+=1
+                i+=1
+        return j==len(pattern)
+            
+    def camelMatch(self, queries: List[str], pattern: str) -> List[bool]:
+        ans=[]
+        for query in queries:
+            ans.append(self.match(query,pattern))
+        return ans
