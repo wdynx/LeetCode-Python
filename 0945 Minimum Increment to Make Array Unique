@@ -1,0 +1,21 @@
+class Solution:
+    def minIncrementForUnique(self, A: List[int]) -> int:
+        ls=[0 for i in range(40000)]
+        for num in A:
+            ls[num]+=1
+        ans,count=0,0
+        for i in range(40000):
+            if ls[i]>1:
+                count+=ls[i]-1
+                ans-=(ls[i]-1)*i
+            elif ls[i]==0:
+                if count>0:
+                    count-=1
+                    ans+=i
+        for i in range(40000,80000):
+            if count==0:
+                break
+            else:
+                ans+=i
+                count-=1
+        return int(ans)
