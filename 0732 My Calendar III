@@ -1,0 +1,27 @@
+class MyCalendarThree:
+
+    def __init__(self):
+        self.start=[]
+        self.end=[]
+
+    def book(self, start: int, end: int) -> int:
+        self.start.append(start)
+        self.start.sort()
+        self.end.append(end)
+        self.end.sort()
+        i,j=0,0
+        Max=0
+        count=0
+        while i<len(self.start):
+            while self.start[i]>=self.end[j]:
+                j+=1
+                count-=1
+            i+=1
+            count+=1
+            if count>Max:
+                Max=count
+        return Max
+        
+# Your MyCalendarThree object will be instantiated and called as such:
+# obj = MyCalendarThree()
+# param_1 = obj.book(start,end)
