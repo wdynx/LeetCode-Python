@@ -1,0 +1,30 @@
+class CombinationIterator:
+
+    def __init__(self, characters: str, combinationLength: int):
+        self.char=characters
+        self.len=combinationLength
+        self.ls=None
+        self.end=True
+
+    def next(self) -> str:
+        if self.ls==None:
+            self.ls=[i for i in range(self.len)]
+        else:
+            for i in range(self.len-1,-1,-1):
+                if self.ls[i]!=len(self.char)-self.len+i:
+                    self.ls[i]+=1
+                    break
+            for j in range(i+1,self.len):
+                self.ls[j]=self.ls[j-1]+1
+        if self.ls[0]==len(self.char)-self.len:
+            self.end=False
+        return ''.join(self.char[i] for i in self.ls)
+
+    def hasNext(self) -> bool:
+        return self.end
+
+
+# Your CombinationIterator object will be instantiated and called as such:
+# obj = CombinationIterator(characters, combinationLength)
+# param_1 = obj.next()
+# param_2 = obj.hasNext()
