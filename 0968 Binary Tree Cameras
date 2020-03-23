@@ -8,16 +8,16 @@
 class Solution:
     def postorder(self,root):
         if root==None:
-            return 0#空
+            return 0
         lval=self.postorder(root.left)
         rval=self.postorder(root.right)
         if (lval==0 or lval==3) and (rval==0 or rval==3):
-            return 1#叶子/自己不是，但是要管
+            return 1
         elif lval==1 or rval==1:
             root.val=1
-            return 2#摄像头
+            return 2
         elif lval==2 or rval==2:
-            return 3#不用管
+            return 3
     def postordercount(self,root):
         if root==None:
             return 0
@@ -29,6 +29,6 @@ class Solution:
             return 0
         self.postorder(root)
         if (root.left==None or root.left.val==0) and (root.right==None or root.right.val==0) and root.val==0:
-            return self.postordercount(root)+1#根是要被管的时候，没有父节点了，只能自己为摄像头
+            return self.postordercount(root)+1
         return self.postordercount(root)
         
