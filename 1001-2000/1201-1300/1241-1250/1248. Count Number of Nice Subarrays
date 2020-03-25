@@ -1,0 +1,16 @@
+class Solution:
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        index=[]
+        for i in range(len(nums)):
+            if nums[i]%2==1:
+                index.append(i)
+        if k>len(index):
+            return 0
+        flex=[]
+        for i in range(len(index)):
+            flex.append(index[i]-index[i-1] if i>0 else index[0]+1)
+        flex.append(len(nums)-index[-1])
+        ans=0
+        for i in range(len(flex)-k):
+            ans+=flex[i]*flex[i+k]
+        return ans
