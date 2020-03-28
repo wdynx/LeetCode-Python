@@ -1,0 +1,10 @@
+class Solution:
+    def numEquivDominoPairs(self, dominoes: List[List[int]]) -> int:
+        ans=0
+        dic={}
+        for domino in dominoes:
+            key_domino=tuple(sorted(domino))
+            dic[key_domino]=dic.get(key_domino,0)+1
+        for k,v in dic.items():
+            ans+=(v-1)*v//2
+        return ans
