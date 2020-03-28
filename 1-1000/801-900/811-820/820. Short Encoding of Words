@@ -1,0 +1,29 @@
+class Solution:
+    def Sum(self,dic):
+        ans=0
+        for key,val in dic.items():
+            if isinstance(val,int):
+                ans+=val
+            else:
+                ans+=self.Sum(val)
+        return ans
+    def minimumLengthEncoding(self, words: List[str]) -> int:
+        dic={}
+        for word in words:
+            length=len(word)
+            curdic=dic
+            while len(word)!=1:
+                if word[-1] in curdic:
+                    if isinstance(curdic[word[-1]],int):
+                        curdic[word[-1]]={}
+                    curdic=curdic[word[-1]]
+                    word=word[:-1]
+                else:
+                    curdic[word[-1]]={}
+                    curdic=curdic[word[-1]]
+                    word=word[:-1]
+            if word[0] in curdic:
+                continue
+            else:
+                curdic[word[-1]]=length+1
+        return self.Sum(dic)
