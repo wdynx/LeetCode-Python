@@ -1,5 +1,3 @@
-#52ms 87.20%
-
 class Solution:
     def computeArea(self, A: int, B: int, C: int, D: int, E: int, F: int, G: int, H: int) -> int:
         left=A if A>E else E
