@@ -1,0 +1,24 @@
+class Solution:
+    def subSort(self, array: List[int]) -> List[int]:
+        if len(array)==0:
+            return [-1,-1]
+        start,end=0,len(array)-1
+        for start in range(0,len(array)-1):
+            if array[start]>array[start+1]:
+                break
+        for end in range(len(array)-1,0,-1):
+            if array[end]<array[end-1]:
+                break
+        if start>=end:
+            return [-1,-1]
+        Min,Max=min(array[start:end+1]),max(array[start:end+1])
+        ans=[start,end]
+        for i in range(start):
+            if array[i]>Min:
+                ans[0]=i
+                break
+        for i in range(len(array)-1,end,-1):
+            if array[i]<Max:
+                ans[1]=i
+                break
+        return ans
