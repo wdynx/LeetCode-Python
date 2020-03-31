@@ -1,0 +1,11 @@
+import numpy as np
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        dp=np.zeros((target,len(nums)),dtype=np.int)
+        for i in range(target):
+            for j in range(len(nums)):
+                if i+1==nums[j]:
+                    dp[i,j]=1
+                elif i+1>nums[j]:
+                    dp[i,j]=dp[i-nums[j]].sum()
+        return dp[-1].sum()
