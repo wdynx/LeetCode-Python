@@ -1,0 +1,17 @@
+class Solution:
+    def myAtoi(self, str: str) -> int:
+        s=str.lstrip()
+        if len(s)==0:
+            return 0
+        num,flag=0,1
+        if s[0]=='-' or s[0]=='+':
+            if s[0]=='-':
+                flag=-1
+            s=s[1:]
+        for i in range(len(s)):
+            if s[i]>='0' and s[i]<='9':
+                num*=10
+                num+=eval(s[i])
+            else:
+                break
+        return max(flag*num,-2**31) if flag==-1 else min(flag*num,2**31-1)
