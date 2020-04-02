@@ -1,0 +1,11 @@
+class Solution:
+    def maxScoreSightseeingPair(self, A: List[int]) -> int:
+        left=[A[i]+i for i in range(len(A))]
+        right=[A[i]-i for i in range(len(A))]
+        Max=left[0]
+        lmax=[]
+        for i in range(len(A)-1):
+            if left[i]>Max:
+                Max=left[i]
+            lmax.append(Max)
+        return max([lmax[i]+right[i+1] for i in range(len(A)-1)])
