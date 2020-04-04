@@ -1,0 +1,14 @@
+class Solution:
+    def trap(self, height: List[int]) -> int:
+        sl,sr,s=0,0,0
+        ml,mr=0,0
+        for i in range(len(height)):
+            if height[i]>ml:
+                ml=height[i]
+            sl+=ml
+            s+=height[i]
+        for i in range(len(height)-1,-1,-1):
+            if height[i]>mr:
+                mr=height[i]
+            sr+=mr
+        return sl+sr-s-len(height)*ml
