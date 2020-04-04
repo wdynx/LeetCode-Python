@@ -1,0 +1,20 @@
+class Solution:
+    def inside(self,string,s):
+        i,j=0,0
+        while i<len(s):
+            if s[i]==string[j]:
+                j+=1
+                if j==len(string):
+                    return True
+            i+=1
+        return False
+    def findLongestWord(self, s: str, d: List[str]) -> str:
+        if d==[]:
+            return ''
+        mlen=max([len(i) for i in d])
+        d.sort(key=lambda x:(mlen-len(x),x[0]))
+        print(d)
+        for string in d:
+            if self.inside(string,s):
+                return string
+        return ''
