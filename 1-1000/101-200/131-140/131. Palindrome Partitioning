@@ -1,0 +1,30 @@
+import numpy as np
+class Solution:
+    def dfs(self,dp,path,ans,s):
+        start=path[-1]+1 if path!=[] else 0
+        if start==len(dp):
+            ans.append([])
+            for i in range(len(path)):
+                if i==0:
+                    ans[-1].append(s[0:path[i]+1])
+                else:
+                    ans[-1].append(s[path[i-1]+1:path[i]+1])
+        for i in range(start,len(dp)):
+            if dp[start,i]:
+                path.append(i)
+                self.dfs(dp,path,ans,s)
+                path.pop()    
+        
+    def partition(self, s):
+        dp=np.zeros((len(s),len(s)),dtype=bool)
+        for i in range(len(s)):
+            for j in range(0,len(s)-i):
+                if i==0:
+                    dp[j,i+j]=True
+                elif i==1:
+                    dp[j,i+j]=s[j]==s[i+j]
+                else:
+                    dp[j,i+j]=dp[j+1,i+j-1] and s[j]==s[i+j]
+        ans=[]
+        self.dfs(dp,[],ans,s)
+        return(ans)
