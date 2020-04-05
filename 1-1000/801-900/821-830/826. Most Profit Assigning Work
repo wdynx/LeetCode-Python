@@ -1,0 +1,25 @@
+class Solution:
+    def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
+        lis=[[difficulty[i],profit[i]] for i in range(len(difficulty))]
+        lis.sort(key=lambda x:x[1],reverse=True)
+        for i in range(len(difficulty)-1):
+            if lis[i+1][0]>lis[i][0]:
+                lis[i+1]=lis[i]
+        ans=0
+        for i in range(len(worker)):
+            left,right=0,len(difficulty)-1
+            if worker[i]>=lis[left][0]:
+                ans+=lis[left][1]
+                continue
+            elif worker[i]<lis[right][0]:
+                continue
+            mid=(left+right)//2
+            while right-left>1:
+                if worker[i]>=lis[mid][0]:
+                    right=mid
+                else:
+                    left=mid
+                mid=(left+right)//2
+            ans+=lis[right][1]
+        return ans
+            
