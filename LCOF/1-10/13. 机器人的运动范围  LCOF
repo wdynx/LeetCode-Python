@@ -1,0 +1,24 @@
+import numpy as np
+class Solution:
+    def getsum(self,i,j):
+        s=0
+        while i or j:
+            s+=i%10+j%10
+            i//=10
+            j//=10
+        return s
+    
+    def dfs(self,grid,i,j,m,n,k):
+        grid[i][j]=1
+        if i>0 and grid[i-1][j]==0 and self.getsum(i-1,j)<=k:
+            self.dfs(grid,i-1,j,m,n,k)
+        if j>0 and grid[i][j-1]==0 and self.getsum(i,j-1)<=k:
+            self.dfs(grid,i,j-1,m,n,k)
+        if i<m-1 and grid[i+1][j]==0 and self.getsum(i+1,j)<=k:
+            self.dfs(grid,i+1,j,m,n,k)
+        if j<n-1 and grid[i][j+1]==0 and self.getsum(i,j+1)<=k:
+            self.dfs(grid,i,j+1,m,n,k)
+    def movingCount(self, m: int, n: int, k: int) -> int:
+        grid=np.zeros((m,n),dtype=int)
+        self.dfs(grid,0,0,m,n,k)
+        return int(grid.sum())
