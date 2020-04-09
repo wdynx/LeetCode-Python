@@ -1,0 +1,20 @@
+import itertools
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        ans=[]
+        for combination in itertools.combinations(range(2*n),n):
+            flag=True
+            for i in range(n):
+                if combination[i]>2*i:
+                    flag=False
+            if flag:
+                res=[]
+                i,j=0,0
+                for i in range(2*n):
+                    if j<n and i==combination[j]:
+                        res.append('(')
+                        j+=1
+                    else:
+                        res.append(')')
+                ans.append(''.join(res))
+        return ans
