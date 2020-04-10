@@ -1,0 +1,30 @@
+class Solution:
+    def find(self,word,mydic):
+        for i in range(len(word)):
+            if word[i] in mydic.keys():
+                mydic=mydic[word[i]]
+                if mydic==None:
+                    return word[:i+1]
+            else:
+                break
+        return word
+    def replaceWords(self, dict: List[str], sentence: str) -> str:
+        mydic={}
+        for word in dict:
+            curdic=mydic
+            for i in range(len(word)):
+                if i+1==len(word):
+                    curdic[word[i]]=None
+                else:
+                    if word[i] in curdic:
+                        if curdic[word[i]]==None:
+                            break
+                        else:
+                            curdic=curdic[word[i]]
+                    else:
+                        curdic[word[i]]={}
+                        curdic=curdic[word[i]]
+        ls=sentence.split()
+        for i in range(len(ls)):
+            ls[i]=self.find(ls[i],mydic)
+        return ' '.join(ls)
