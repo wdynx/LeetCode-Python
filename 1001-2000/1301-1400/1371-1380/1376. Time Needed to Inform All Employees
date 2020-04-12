@@ -1,0 +1,18 @@
+class Solution:
+    def inform(self,dic,time,cur,informTime):
+        if cur not in dic.keys():
+            return
+        for i in dic[cur]:
+            time[i]=time[cur]+informTime[cur]
+            self.inform(dic,time,i,informTime)
+
+    def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+        dic={}
+        time=[0]*n
+        for i in range(n):
+            if manager[i] not in dic.keys():
+                dic[manager[i]]=[i]
+            else:
+                dic[manager[i]].append(i)
+        self.inform(dic,time,headID,informTime)
+        return max(time)
