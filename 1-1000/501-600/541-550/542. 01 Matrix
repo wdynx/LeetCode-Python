@@ -1,0 +1,29 @@
+class Solution:
+    def updateMatrix(self, matrix: List[List[int]]) -> List[List[int]]:
+        reached=set()
+        tocheck=[]
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j]==0:
+                    tocheck.append((i,j))
+                    reached.add((i,j))
+        while tocheck:
+            point=tocheck.pop(0)
+            reached.add(point)
+            if point[0]>0 and (point[0]-1,point[1]) not in reached:
+                matrix[point[0]-1][point[1]]=matrix[point[0]][point[1]]+1
+                reached.add((point[0]-1,point[1]))
+                tocheck.append((point[0]-1,point[1]))
+            if point[0]<len(matrix)-1 and (point[0]+1,point[1]) not in reached:
+                matrix[point[0]+1][point[1]]=matrix[point[0]][point[1]]+1
+                reached.add((point[0]+1,point[1]))
+                tocheck.append((point[0]+1,point[1]))
+            if point[1]>0 and (point[0],point[1]-1) not in reached:
+                matrix[point[0]][point[1]-1]=matrix[point[0]][point[1]]+1
+                reached.add((point[0],point[1]-1))
+                tocheck.append((point[0],point[1]-1))
+            if point[1]<len(matrix[0])-1 and (point[0],point[1]+1) not in reached:
+                matrix[point[0]][point[1]+1]=matrix[point[0]][point[1]]+1
+                reached.add((point[0],point[1]+1))
+                tocheck.append((point[0],point[1]+1))
+        return matrix
