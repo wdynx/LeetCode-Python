@@ -1,0 +1,26 @@
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        ls1=[]
+        ls2=[]
+        stack=[]
+        index=[]
+        while num:
+            ls1.append(num%10)
+            num//=10
+        for i in range(len(ls1)):
+            ls2.append(ls1[-i-1])
+            while stack!=[] and (stack[-1]<ls1[-1-i] or stack[-1]==ls1[-1-i] and index[-1]!=len(index)-1):
+                stack.pop()
+                index.pop()
+            stack.append(ls1[-i-1])
+            index.append(i)
+        change=0
+        for i in range(len(ls1)):
+            if i<len(stack) and ls2[i]!=stack[i]:
+                change=1
+                big=index[i]
+                small=i
+                break
+        if change==1:
+            ls2[big],ls2[small]=ls2[small],ls2[big]
+        return int(''.join(map(str,ls2)))
