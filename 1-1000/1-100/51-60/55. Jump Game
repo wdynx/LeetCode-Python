@@ -1,0 +1,12 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        if len(nums)==1:
+            return True
+        cur,lim=0,nums[0]
+        while cur<lim:
+            cur+=1
+            if cur+nums[cur]>lim:
+                lim=cur+nums[cur]
+            if lim>=len(nums)-1:
+                return True
+        return False
