@@ -1,0 +1,10 @@
+class Solution:
+    def maxChunksToSorted(self, arr: List[int]) -> int:
+        num=-1
+        count=0
+        for index in range(len(arr)):
+            if arr[index]>num:
+                num=arr[index]
+            if index==num:
+                count+=1
+        return count
