@@ -1,0 +1,17 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def sumAndGrad(self,root):
+        if root==None:
+            return 0,0
+        leftSum,leftGrad=self.sumAndGrad(root.left)
+        rightSum,rightGrad=self.sumAndGrad(root.right)
+        return leftSum+rightSum+root.val,leftGrad+rightGrad+abs(leftSum-rightSum)
+    def findTilt(self, root: TreeNode) -> int:
+        Sum,Grad=self.sumAndGrad(root)
+        return Grad
