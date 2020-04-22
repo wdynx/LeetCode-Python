@@ -1,0 +1,37 @@
+class Solution:
+    def findLUSlength(self, strs: List[str]) -> int:
+        def isSubstring(s1,s2):
+            i,j=0,0
+            while True:
+                if j==len(s2):
+                    return True
+                elif i==len(s1):
+                    return False
+                if s1[i]==s2[j]:
+                    i+=1
+                    j+=1
+                else:
+                    i+=1
+        dic={}
+        for string in strs:
+            if len(string) not in dic.keys():
+                dic[len(string)]={string:1}
+            elif string in dic[len(string)]:
+                dic[len(string)][string]+=1
+            else:
+                dic[len(string)][string]=1
+        lengths=sorted(dic.keys(),reverse=True)
+        maxLength=max(lengths)
+        print(dic)
+        for length in lengths:
+            if length==maxLength:
+                for item in dic[length].items():
+                    if item[1]==1:
+                        return length
+            else:
+                for shortString in dic[length].keys():
+                    if dic[length][shortString]==1:
+                        for longString in dic[maxLength].keys():
+                            if not isSubstring(longString,shortString):
+                                return length
+        return -1
