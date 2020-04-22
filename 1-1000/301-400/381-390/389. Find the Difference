@@ -1,0 +1,10 @@
+class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        dic={}
+        for i in s:
+            dic[i]=dic.get(i,0)+1
+        for i in t:
+            if i not in dic.keys() or dic[i]==0:
+                return i
+            else:
+                dic[i]-=1
