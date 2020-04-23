@@ -1,0 +1,11 @@
+class Solution:
+    def maxCount(self, m: int, n: int, ops: List[List[int]]) -> int:
+        if not ops:
+            return 0
+        minM,minN=40000,40000
+        for op in ops:
+            if op[0]<minM:
+                minM=op[0]
+            if op[1]<minN:
+                minN=op[1]
+        return minM*minN
