@@ -1,0 +1,20 @@
+class Solution:
+    def generateParenthesis(self, n):
+        def generateResult(place,n):
+            ls=[')']*n*2
+            for i in place:
+                ls[i]='('
+            return ''.join(ls)
+        ls=list(range(n))
+        res=[]
+        while True:
+            res.append(generateResult(ls,n))
+            i=n-1
+            while ls[i]==2*i:
+                if i==0:
+                    return res
+                else:
+                    i-=1
+            ls[i]+=1
+            for j in range(i+1,n):
+                ls[j]=ls[j-1]+1
