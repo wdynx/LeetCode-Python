@@ -1,0 +1,23 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def kthLargest(self, root: TreeNode, k: int) -> int:
+        def inorder(root,count,k):
+            value=None
+            if root.right:
+                count,value=inorder(root.right,count,k)
+            if count==k:
+                return count,value
+            count+=1
+            if count==k:
+                return count,root.val
+            if root.left:
+                count,value=inorder(root.left,count,k)
+            return count,value
+        count,value=inorder(root,0,k)
+        return value
