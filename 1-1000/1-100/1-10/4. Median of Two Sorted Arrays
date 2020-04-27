@@ -1,0 +1,48 @@
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        l1=len(nums1)
+        l2=len(nums2)
+        if not nums1:
+            return (nums2[(l2-1)//2]+nums2[l2//2])/2
+        if not nums2:
+            return (nums1[(l1-1)//2]+nums1[l1//2])/2
+        total=l1+l2
+        mid=total//2
+        isOdd=total%2==0
+        drop=0
+        i,j=0,0
+        while i+j<mid:
+            rest=mid-i-j
+            tomove=(rest+1)//2
+            ii=i+tomove if i+tomove<l1 else l1
+            jj=j+tomove if j+tomove<l2 else l2
+            if nums1[ii-1]>nums2[jj-1]:
+                j=jj
+            else:
+                i=ii
+            if i==l1 or j==l2:
+                break
+        if i==l1:
+            j=mid-i
+        elif j==l2:
+            i=mid-j
+        if isOdd:
+            if i==0:
+                left=nums2[j-1]
+            elif j==0:
+                left=nums1[i-1]
+            else:
+                left=max(nums1[i-1],nums2[j-1])
+            if i==l1:
+                right=nums2[j]
+            elif j==l2:
+                right=nums1[i]
+            else:
+                right=min(nums1[i],nums2[j])
+            return (left+right)/2
+        else:
+            if i==l1:
+                return nums2[j]
+            if j==l2:
+                return nums1[i]
+            return min(nums1[i],nums2[j])
