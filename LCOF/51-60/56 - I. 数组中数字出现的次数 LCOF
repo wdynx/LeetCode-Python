@@ -1,0 +1,17 @@
+class Solution:
+    def singleNumbers(self, nums: List[int]) -> List[int]:
+        judgement=0
+        for num in nums:
+            judgement^=num
+        count=0
+        while judgement%2!=1:
+            judgement//=2
+            count+=1
+        k=2**count
+        a,b=0,0
+        for num in nums:
+            if ((num//k)^judgement)%2:
+                a^=num
+            else:
+                b^=num
+        return [a,b]
