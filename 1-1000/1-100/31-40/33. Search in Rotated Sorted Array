@@ -1,0 +1,20 @@
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        if not nums:
+            return -1
+        left,right=0,len(nums)-1
+        if nums[left]==target:
+            return left
+        if nums[right]==target:
+            return right
+        while right-left>1:
+            mid=(left+right)//2
+            if nums[mid]==target:
+                return mid
+            if nums[mid]>nums[left] and nums[mid]>target and target>nums[left]:
+                right=mid
+            elif nums[mid]<nums[left] and (nums[mid]>target or target>nums[left]):
+                right=mid
+            else:
+                left=mid
+        return -1
