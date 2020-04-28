@@ -1,0 +1,52 @@
+class Solution:
+    def threeEqualParts(self, A: List[int]) -> List[int]:
+        oneCount=sum(A)
+        if oneCount==0:
+            return [0,2]
+        if oneCount%3!=0:
+            return [-1,-1]
+        oneCount//=3
+        zeros=[-1,-1,-1,-1,-1,-1]
+        ones=[-1,-1,-1,-1,-1,-1]
+        i=0
+        while A[i]!=1:
+            i+=1
+        ones[0]=i
+        count=0
+        while count<oneCount:
+            if A[i]==1:
+                count+=1
+            i+=1
+        ones[1]=i
+        zeros[0]=i
+        while A[i]!=1:
+            i+=1
+        zeros[1]=i
+        ones[2]=i
+        count=0
+        while count<oneCount:
+            if A[i]==1:
+                count+=1
+            i+=1
+        ones[3]=i
+        zeros[2]=i
+        while A[i]!=1:
+            i+=1
+        zeros[3]=i
+        ones[4]=i
+        count=0
+        while count<oneCount:
+            if A[i]==1:
+                count+=1
+            i+=1
+        ones[5]=i
+        zeros[4]=i
+        zeros[5]=len(A)
+        a=int(''.join(map(str,A[ones[0]:ones[1]])))
+        b=int(''.join(map(str,A[ones[2]:ones[3]])))
+        c=int(''.join(map(str,A[ones[4]:ones[5]])))
+        if a!=b or b!=c:
+            return [-1,-1]
+        if zeros[1]-zeros[0]<zeros[5]-zeros[4] or zeros[3]-zeros[2]<zeros[5]-zeros[4]:
+            return [-1,-1]
+        return [ones[1]+zeros[5]-zeros[4]-1,ones[3]+zeros[5]-zeros[4]]
