@@ -1,0 +1,8 @@
+class Solution:
+    def numPairsDivisibleBy60(self, time: List[int]) -> int:
+        dic={}
+        count=0
+        for i in time:
+            count+=dic.get((60-i)%60,0)
+            dic[i%60]=dic.get(i%60,0)+1
+        return count
