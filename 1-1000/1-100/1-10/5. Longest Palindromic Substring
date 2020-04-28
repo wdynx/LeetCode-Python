@@ -1,0 +1,44 @@
+import numpy as np
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        if not s:
+            return ''
+        def findR(s,index,i=1):
+            while index+i<len(s) and index-i>=0 and s[index+i]==s[index-i]:
+                i+=1
+            return i-1
+        newS=['']
+        newS.extend(list(s))
+        newS.append('')
+        newS='#'.join(newS)
+        rad=[]
+        center,maxRight,cL=-1,-1,-1
+        for i in range(len(newS)):
+            if i>maxRight:
+                r=findR(newS,i)
+                rad.append(r)
+                if i+r>maxRight:
+                    maxRight=i+r
+                    center=i
+                    cL=i-r
+            else:
+                pL=2*center-i-rad[2*center-i]
+                if pL>cL:
+                    rad.append(rad[2*center-i])
+                elif pL<cL:
+                    rad.append(maxRight-i)
+                else:
+                    r=findR(newS,i,maxRight-i+1)
+                    rad.append(r)
+                    if i+r>maxRight:
+                        maxRight=i+r
+                        center=i
+                        cL=i-r
+        maxarg=-1
+        maxlen=-1
+        for i in range(len(rad)):
+            if rad[i]>maxlen:
+                maxlen=rad[i]
+                maxarg=i
+        res=newS[maxarg-maxlen:maxarg+maxlen].split('#')
+        return ''.join(res)
