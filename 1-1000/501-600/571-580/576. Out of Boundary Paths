@@ -1,0 +1,36 @@
+import numpy as np
+class Solution:
+    def findPaths(self, m: int, n: int, N: int, i: int, j: int):
+        if N==0:
+            return 0
+        res=0
+        dp=np.zeros((m,n),dtype=int)
+        dpTemp=np.zeros((m,n),dtype=int)
+        for k in range(N):
+            if k==0:
+                for ii in range(m):
+                    dp[ii,0]+=1
+                    dp[ii,n-1]+=1
+                for jj in range(n):
+                    dp[0,jj]+=1
+                    dp[m-1,jj]+=1
+                res+=dp[i,j]
+            else:
+                for ii in range(m):
+                    for jj in range(n):
+                        dpTemp[ii,jj]=0
+                        if ii-1>=0:
+                            dpTemp[ii,jj]+=dp[ii-1,jj]
+                        if jj-1>=0:
+                            dpTemp[ii,jj]+=dp[ii,jj-1]
+                        if ii+1<m:
+                            dpTemp[ii,jj]+=dp[ii+1,jj]
+                        if jj+1<n:
+                            dpTemp[ii,jj]+=dp[ii,jj+1]
+                        if dpTemp[ii,jj]>1000000007:
+                            dpTemp[ii,jj]%=1000000007
+                dp,dpTemp=dpTemp,dp
+                res+=dp[i,j]
+                if res>1000000007:
+                    res%=1000000007
+        return res
