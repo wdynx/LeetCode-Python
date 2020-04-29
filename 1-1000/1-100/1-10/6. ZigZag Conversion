@@ -1,0 +1,15 @@
+class Solution:
+    def convert(self, s: str, numRows: int) -> str:
+        if numRows==1:
+            return s
+        zigzag=[[] for _ in range(numRows)]
+        index=0
+        flag=1
+        for i in s:
+            zigzag[index].append(i)
+            index+=flag
+            if index==0:
+                flag=1
+            elif index==numRows-1:
+                flag=-1
+        return ''.join(map(''.join,zigzag))
