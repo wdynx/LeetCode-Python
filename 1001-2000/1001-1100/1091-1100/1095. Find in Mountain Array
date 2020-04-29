@@ -1,0 +1,68 @@
+class Solution:
+    def linearScan(self,target,mountain_arr,left,right):
+        for i in range(left,right):
+            if mountain_arr.get(i)==target:
+                return i
+        return -1
+
+    def binScan(self,target,mountain_arr,left,right):#[left,right)
+        if right-left<4:
+            return self.linearScan(target,mountain_arr,left,right)
+        mid=(left+right)//2
+        if mountain_arr.get(mid)==target:
+            return mid
+        if mountain_arr.get(left)<mountain_arr.get(right-1):
+            if target>mountain_arr.get(mid):
+                return self.binScan(target, mountain_arr, mid, right)
+            else:
+                return self.binScan(target, mountain_arr, left, mid)
+        else:
+            if target<mountain_arr.get(mid):
+                return self.binScan(target, mountain_arr, mid, right)
+            else:
+                return self.binScan(target, mountain_arr, left, mid)
+
+    def myFindInMountainArray(self,target,mountain_arr,left,right):
+        if target<min(mountain_arr.get(left),mountain_arr.get(right-1)):
+            return -1
+        if right-left<4:
+            return self.linearScan(target,mountain_arr,left,right)
+        else:
+            l=right-left
+            a,b,c=l//2//2+left,l//2+left,(l+l//2)//2+left
+            ga,gb,gc=mountain_arr.get(a),mountain_arr.get(b),mountain_arr.get(c)
+            if ga<gb<=gc:
+                if target<=gb:
+                    res=self.binScan(target,mountain_arr,left,b)
+                    if res>=0:
+                        return res
+                    else:
+                        return self.myFindInMountainArray(target,mountain_arr,b,right)
+                else:
+                    return self.myFindInMountainArray(target,mountain_arr,b,right)
+            elif ga>=gb>gc:
+                if target<=gb:
+                    res=self.myFindInMountainArray(target,mountain_arr,left,b)
+                    if res>=0:
+                        return res
+                    else:
+                        return self.binScan(target,mountain_arr,b,right)
+                else:
+                    return self.myFindInMountainArray(target,mountain_arr,left,b)
+            else:
+                if target<ga:
+                    res=self.binScan(target,mountain_arr,left,a)
+                    if res>=0:
+                        return res
+                if target>=min(ga,gc):
+                    res=self.myFindInMountainArray(target, mountain_arr, a, c+1)
+                    if res>=0:
+                        return res
+                if target<gc:
+                    res=self.binScan(target, mountain_arr, c, right)
+                    if res>0:
+                        return res
+                return -1
+
+    def findInMountainArray(self, target, mountain_arr):
+        return self.myFindInMountainArray(target,mountain_arr,0,mountain_arr.length())
