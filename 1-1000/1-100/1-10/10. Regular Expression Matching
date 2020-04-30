@@ -1,0 +1,19 @@
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        p_=[]
+        for i in range(len(p)):
+            if not p_ or p[i]!='*' or p_[-1]!='*':
+                p_.append(p[i])
+        p=''.join(p)
+        dp=[[False]*(len(p)+1) for _ in range(len(s)+1)]
+        for i in range(len(s)+1):
+            for j in range(len(p)+1):
+                if i==0 and j==0:#0,0的情况
+                    dp[i][j]=True
+                elif j>0 and p[j-1]=='*' and (dp[i][j-1] or dp[i][j-2]):#左边两格
+                    dp[i][j]=True
+                elif i>0 and j>0 and p[j-1]=='*' and (s[i-1]==p[j-2] or p[j-2]=='.') and dp[i-1][j]:#上方一格
+                    dp[i][j]=True
+                elif i>0 and j>0 and (p[j-1]==s[i-1] or p[j-1]=='.') and dp[i-1][j-1]:#左上方一格
+                    dp[i][j]=True
+        return dp[len(s)][len(p)]
