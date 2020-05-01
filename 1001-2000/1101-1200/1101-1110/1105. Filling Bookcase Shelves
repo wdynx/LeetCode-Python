@@ -1,0 +1,13 @@
+class Solution:
+    def minHeightShelves(self,books,shelf_width):
+        dp=[0]*len(books)
+        for i in range(len(books)):
+            for j in range(i+1):
+                if i-j<0:
+                    break
+                if sum(map(lambda x:x[0],books[i-j:i+1]))>shelf_width:
+                    break
+                temp=(dp[i-j-1] if i-j-1>=0 else 0)+max(map(lambda x:x[1],books[i-j:i+1]))
+                if dp[i]==0 or temp<dp[i]:
+                    dp[i]=temp
+        return dp[-1]
