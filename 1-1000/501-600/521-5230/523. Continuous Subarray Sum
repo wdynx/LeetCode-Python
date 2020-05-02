@@ -1,0 +1,17 @@
+class Solution:
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+        if k==0:
+            for i in range(len(nums)-1):
+                if nums[i]==nums[i+1]==0:
+                    return True
+            return False
+        dic={0:-1}
+        S=0
+        for i in range(len(nums)):
+            S+=nums[i]
+            S%=k
+            if S in dic.keys() and i-dic[S]>1:
+                return True
+            elif S not in dic.keys():
+                dic[S]=i
+        return False
