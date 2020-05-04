@@ -1,0 +1,14 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        for i in range(len(nums)):
+            nums[i]+=i
+        start,curend,nextend=0,0,nums[0]
+        count=0
+        while curend<len(nums)-1:
+            for i in range(start,curend+1):
+                if nums[i]>nextend:
+                    nextend=nums[i]
+            start=curend
+            curend=nextend
+            count+=1
+        return count
