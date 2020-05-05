@@ -1,0 +1,13 @@
+class Solution:
+    def mincostTickets(self, days: List[int], costs: List[int]) -> int:
+        if not days:
+            return 0
+        ls=[0]
+        last=days[-1]
+        days=set(days)
+        for i in range(1,last+1):
+            if i in days:
+                ls.append(min(costs[0]+ls[i-1],costs[1]+(ls[i-7] if i-7>=0 else 0),costs[2]+(ls[i-30] if i-30>=0 else 0)))
+            else:
+                ls.append(ls[-1])
+        return ls[-1]
