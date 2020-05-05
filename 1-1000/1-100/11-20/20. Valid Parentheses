@@ -1,0 +1,12 @@
+class Solution:
+    def isValid(self, s: str) -> bool:
+        ls=[]
+        for i in s:
+            if i=='[' or i=='(' or i=='{':
+                ls.append(i)
+            else:
+                if ls and (ls[-1]=='[' and i==']' or ls[-1]=='{' and i=='}' or ls[-1]=='(' and i==')'):
+                    ls.pop()
+                else:
+                    return False
+        return not ls
