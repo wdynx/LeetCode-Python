@@ -1,0 +1,23 @@
+class Solution:
+    def divide(self, dividend: int, divisor: int) -> int:
+        flag=1
+        if dividend<0:
+            dividend=-dividend
+            flag=-flag
+        if divisor<0:
+            divisor=-divisor
+            flag=-flag
+        dp=[(divisor,1)]
+        while dp[-1][0]<dividend:
+            dp.append((dp[-1][0]<<1,dp[-1][1]<<1))
+        res=0
+        for item in dp[::-1]:
+            if dividend>=item[0]:
+                dividend-=item[0]
+                res+=item[1]
+        if flag>0 and res>2**31-1:
+            return 2**31-1
+        elif flag<0 and res>2**31:
+            return 2**31-1
+        else:
+            return flag*res
