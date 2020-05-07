@@ -1,0 +1,27 @@
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        dic={}
+        ret=[]
+        wordCount=len(words)
+        if wordCount==0:
+            return []
+        wordLen=len(words[0])
+        for word in words:
+            dic[word]=dic.get(word,0)+1
+        for offset in range(wordLen):
+            curdic={}
+            start,end=0,0
+            while offset+(end+1)*wordLen<=len(s):
+                curword=s[offset+end*wordLen:offset+(end+1)*wordLen]
+                end+=1
+                if curword not in dic.keys():
+                    start=end
+                    curdic={}
+                else:
+                    curdic[curword]=curdic.get(curword,0)+1
+                    while curdic[curword]>dic[curword]:
+                        curdic[s[offset+start*wordLen:offset+(start+1)*wordLen]]-=1
+                        start+=1
+                    if end-start==wordCount:
+                        ret.append(offset+start*wordLen)
+        return ret
