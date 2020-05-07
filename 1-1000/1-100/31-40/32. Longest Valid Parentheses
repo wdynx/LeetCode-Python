@@ -1,0 +1,17 @@
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        ls=[]
+        res=0
+        cur=0
+        for i in range(len(s)):
+            if s[i]=='(':
+                ls.append(i<<1)
+            else:
+                if ls and ls[-1]%2==0:
+                    ls.pop()
+                    cur=i-(ls[-1]//2 if ls else -1)
+                    if cur>res:
+                        res=cur
+                else:
+                    ls.append((i<<1)+1)
+        return res
