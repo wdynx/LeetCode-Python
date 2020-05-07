@@ -1,0 +1,16 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def isSubtree(self, s: TreeNode, t: TreeNode) -> bool:
+        def inorder(root):
+            if root==None:
+                return ''
+            left=inorder(root.left)
+            right=inorder(root.right)
+            return '{'+left+str(root.val)+right+'}'
+        return inorder(t) in inorder(s)
