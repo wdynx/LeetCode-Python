@@ -1,0 +1,19 @@
+class Solution:
+    def countAndSay(self, n: int) -> str:
+        for i in range(n):
+            if i==0:
+                nums=[1]
+            else:
+                count=0
+                curNum=nums[0]
+                newNums=[]
+                for num in nums:
+                    if num==curNum:
+                        count+=1
+                    else:
+                        newNums.extend([count,curNum])
+                        curNum=num
+                        count=1
+                newNums.extend([count,curNum])
+                nums=newNums
+        return ''.join(map(str,nums))
