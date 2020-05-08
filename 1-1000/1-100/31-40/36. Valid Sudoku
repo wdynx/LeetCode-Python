@@ -1,0 +1,23 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        def check(nums):
+            showed=set()
+            for num in nums:
+                if num=='.':
+                    continue
+                if num in showed:
+                    return False
+                else:
+                    showed.add(num)
+            return True
+        for i in range(9):
+            res=check(board[i])
+            if not res:
+                return False
+            res=check([board[j][i] for j in range(9)])
+            if not res:
+                return False
+            res=check([board[i//3*3+j//3][i%3*3+j%3] for j in range(9)])
+            if not res:
+                return False
+        return True
