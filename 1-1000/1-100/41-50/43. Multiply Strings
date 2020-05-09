@@ -1,0 +1,33 @@
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        nums=[]
+        def add(x,y):
+            if len(x)<len(y):
+                x,y=y,x
+            flag=0
+            ls=[]
+            for i in range(len(x)):
+                z=ord(x[len(x)-1-i])-ord('0')+(ord(y[len(y)-1-i])-ord('0') if i<len(y) else 0)+flag
+                flag=z//10
+                ls.append(chr(z%10+ord('0')))
+            if flag==1:
+                ls.append('1')
+            return ''.join(reversed(ls))
+        for i in range(len(num1)):
+            for j in range(len(num2)):
+                if num1[i]=='0' or num2[j]=='0':
+                    continue
+                num=(ord(num1[i])-ord('0'))*(ord(num2[j])-ord('0'))
+                nums.append((str(num),len(num1)+len(num2)-i-j-2))
+        if not nums:
+            return '0'
+        while len(nums)!=1:
+            a=nums.pop()
+            b=nums.pop()
+            if a[1]<b[1]:
+                a,b=b,a
+            x=a[0]+'0'*(a[1]-b[1])
+            y=b[0]
+            z=add(x,y)
+            nums.append((z,b[1]))
+        return nums[0][0]+'0'*nums[0][1]
