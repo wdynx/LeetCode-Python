@@ -1,0 +1,10 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        dic={}
+        for string in strs:
+            word=''.join(sorted(list(string)))
+            if word in dic:
+                dic[word].append(string)
+            else:
+                dic[word]=[string]
+        return list(dic.values())
