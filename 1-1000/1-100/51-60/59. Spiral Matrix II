@@ -1,0 +1,18 @@
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        ls=[[0]*n for _ in range(n)]
+        cnt=1
+        for i in range((n+1)//2):
+            for j in range(i,n-i):
+                ls[i][j]=cnt
+                cnt+=1
+            for j in range(i+1,n-i):
+                ls[j][n-i-1]=cnt
+                cnt+=1
+            for j in range(n-i-2,i-1,-1):
+                ls[n-1-i][j]=cnt
+                cnt+=1
+            for j in range(n-i-2,i,-1):
+                ls[j][i]=cnt
+                cnt+=1
+        return ls
