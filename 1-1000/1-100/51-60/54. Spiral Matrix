@@ -1,0 +1,27 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix:
+            return []
+        left,right,up,down=0,len(matrix[0]),0,len(matrix)
+        ls=[]
+        while left<right and up<down:
+            if right-left==1:
+                for i in range(up,down):
+                    ls.append(matrix[i][left])
+            elif down-up==1:
+                for i in range(left,right):
+                    ls.append(matrix[up][i])
+            else:
+                for i in range(left,right):
+                    ls.append(matrix[up][i])
+                for i in range(up+1,down):
+                    ls.append(matrix[i][right-1])
+                for i in range(right-2,left-1,-1):
+                    ls.append(matrix[down-1][i])
+                for i in range(down-2,up,-1):
+                    ls.append(matrix[i][left])
+            left+=1
+            right-=1
+            up+=1
+            down-=1
+        return ls
