@@ -1,0 +1,17 @@
+class Solution:
+    def getPermutation(self, n: int, k: int) -> str:
+        seq=[]
+        res=[]
+        k-=1
+        digit=1
+        while k:
+            seq.append(k%digit)
+            k//=digit
+            digit+=1
+        while len(seq)<n:
+            seq.append(0)
+        numls=list(range(1,n+1))
+        for i in seq[::-1]:
+            res.append(str(numls[i]))
+            numls.pop(i)
+        return ''.join(res)
