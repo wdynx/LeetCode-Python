@@ -1,0 +1,26 @@
+class Solution:
+    def searchMatrix(self, matrix, target: int,rowStart=0,colStart=0,rowEnd=-1,colEnd=-1):
+        if rowEnd==-1:
+            rowEnd=len(matrix)
+        if rowEnd<=rowStart:
+            return False
+        if colEnd==-1:
+            colEnd=len(matrix[0])
+        if colEnd<=colStart:
+            return False
+        if rowEnd-rowStart==1 and colEnd-colStart==1:
+            return matrix[rowStart][colStart]==target
+        if matrix[rowStart][colStart]>target or matrix[rowEnd-1][colEnd-1]<target:
+            return False
+        rowMid=(rowStart+rowEnd)//2
+        colMid=(colStart+colEnd)//2
+        if matrix[rowMid][colMid]==target:
+            return True
+        elif matrix[rowMid][colMid]<target:
+            return self.searchMatrix(matrix,target,rowMid,colMid,rowEnd,colEnd)|\
+                self.searchMatrix(matrix,target,rowMid,colStart,rowEnd,colMid)|\
+                    self.searchMatrix(matrix,target,rowStart,colMid,rowMid,colEnd)
+        else:
+            return self.searchMatrix(matrix,target,rowStart,colStart,rowMid,colMid)|\
+                self.searchMatrix(matrix,target,rowMid,colStart,rowEnd,colMid)|\
+                    self.searchMatrix(matrix,target,rowStart,colMid,rowMid,colEnd)
