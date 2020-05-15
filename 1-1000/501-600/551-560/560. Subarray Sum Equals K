@@ -1,0 +1,12 @@
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        dic={0:1}
+        res=0
+        numSum=[nums[0]]
+        for i in range(1,len(nums)):
+            numSum.append(nums[i]+numSum[-1])
+        for num in numSum:
+            if num-k in dic.keys():
+                res+=dic[num-k]
+            dic[num]=dic.get(num,0)+1
+        return res
