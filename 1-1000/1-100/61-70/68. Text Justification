@@ -1,0 +1,38 @@
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        def reshape(lines,maxWidth):
+            for i in range(len(lines)):
+                if i!=len(lines)-1:
+                    if len(lines[i])==1:
+                        lines[i]=lines[i][0]+' '*(maxWidth-len(lines[i][0]))
+                    else:
+                        spaceNum=len(lines[i])-1
+                        spaceTotal=maxWidth-sum(list(map(len,lines[i])))
+                        div,mod=divmod(spaceTotal,spaceNum)
+                        spaceList=[div+1]*mod+[div]*(spaceNum-mod)
+                        line=lines[i][0]
+                        for j in range(spaceNum):
+                            line+=' '*spaceList[j]+lines[i][j+1]
+                        lines[i]=line                        
+                else:
+                    lines[i]=' '.join(lines[i])
+                    lines[i]+=' '*(maxWidth-len(lines[i]))
+            return lines
+        lines=[]
+        line=[]
+        length=0
+        for word in words:
+            if not line:
+                length+=len(word)
+            else:
+                length+=1+len(word)
+            if length>maxWidth:
+                lines.append(line)
+                line=[word]
+                length=len(word)
+            else:
+                line.append(word)
+        if line:
+            lines.append(line)
+        reshape(lines,maxWidth)
+        return lines
