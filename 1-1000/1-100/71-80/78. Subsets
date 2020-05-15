@@ -1,9 +1,4 @@
 class Solution:
-    def subsets(self, nums: List[int]) -> List[List[int]]:
-        length=len(nums)
-        res=[]
-        for i in range(2**length):
-            string='{0:0{1}b}'.format(i,length)
-            ls=[j for j in string]
-            res.append(list(map(lambda x:x[0],filter(lambda x:x[-1]=='1',zip(nums,ls)))))
-        return res
+    def subsets(self, nums):
+        return [list(map(lambda x:x[0],filter(lambda x:x[-1]=='1',zip(nums,[j for j in '{0:0{1}b}'.format(i,len(nums))])))) for i in range(2**len(nums))]
+      
