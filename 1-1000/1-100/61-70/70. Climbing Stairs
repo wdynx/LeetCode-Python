@@ -1,0 +1,6 @@
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        sqrt5=5**0.5
+        a=(sqrt5+1)/2
+        b=-1/a
+        return int((a**(n+1)-b**(n+1))/sqrt(5))
