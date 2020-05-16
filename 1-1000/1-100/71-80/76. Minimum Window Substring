@@ -1,0 +1,43 @@
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        dic={}
+        for i in t:
+            dic[i]=dic.get(i,0)+1
+        dic_copy=dic.copy()
+        cur_dic={}
+        head,rear=0,0
+        while dic_copy:
+            if rear==len(s):
+                return ''
+            if s[rear] in dic.keys():
+                cur_dic[s[rear]]=cur_dic.get(s[rear],0)+1
+            if s[rear] in dic_copy.keys():
+                dic_copy[s[rear]]-=1
+                if dic_copy[s[rear]]==0:
+                    del dic_copy[s[rear]]
+            rear+=1
+        while s[head] not in dic.keys() or cur_dic[s[head]]>dic[s[head]]:
+            if s[head] in dic.keys():
+                cur_dic[s[head]]-=1
+            head+=1
+        min_head=head
+        min_rear=rear
+        min_len=rear-head
+        while rear<len(s):
+            if s[rear] not in dic.keys():
+                rear+=1
+            elif s[rear] in dic.keys() and s[rear]!=s[head]:
+                cur_dic[s[rear]]+=1
+                rear+=1
+            else:
+                cur_dic[s[rear]]+=1
+                rear+=1
+                while s[head] not in dic.keys() or cur_dic[s[head]]>dic[s[head]]:
+                    if s[head] in dic.keys():
+                        cur_dic[s[head]]-=1
+                    head+=1
+                if rear-head<min_len:
+                    min_head=head
+                    min_rear=rear
+                    min_len=rear-head
+        return s[min_head:min_rear]
