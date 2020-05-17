@@ -1,0 +1,31 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        def dfs(board,i,j,word,path):
+            if len(word)==1:
+                return True
+            path.add((i,j))
+            if i>0 and (i-1,j) not in path and board[i-1][j]==word[1]:
+                flag=dfs(board,i-1,j,word[1:],path)
+                if flag==True:
+                    return flag
+            if j>0 and (i,j-1) not in path and board[i][j-1]==word[1]:
+                flag=dfs(board,i,j-1,word[1:],path)
+                if flag==True:
+                    return flag
+            if i<len(board)-1 and (i+1,j) not in path and board[i+1][j]==word[1]:
+                flag=dfs(board,i+1,j,word[1:],path)
+                if flag==True:
+                    return flag
+            if j<len(board[0])-1 and (i,j+1) not in path and board[i][j+1]==word[1]:
+                flag=dfs(board,i,j+1,word[1:],path)
+                if flag==True:
+                    return flag
+            path.remove((i,j))
+            return False
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j]==word[0]:
+                    flag=dfs(board,i,j,word,set())
+                    if flag:
+                        return True
+        return False
