@@ -1,0 +1,25 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        dic={}
+        for i in range(numCourses):
+            dic[i]=set()
+        for prerequisite in prerequisites:
+            dic[prerequisite[0]].add(prerequisite[1])
+        res=[]
+        while True:
+            course=set()
+            for item in dic.items():
+                if not item[1]:
+                    course.add(item[0])
+            size_bef=len(dic)
+            for key in course:
+                del dic[key]
+            size_aft=len(dic)
+            if size_aft==size_bef:
+                break
+            for key in dic.keys():
+                dic[key]-=course
+            res.extend(list(course))
+        if len(res)<numCourses:
+            return []
+        return res
