@@ -1,0 +1,15 @@
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        ls=[(-1,0)]
+        res=0
+        heights=heights+[0]
+        for i in range(len(heights)):
+            if ls[-1][-1]<=heights[i]:
+                ls.append((i,heights[i]))
+                res=max(res,heights[i])
+            else:
+                while ls[-1][-1]>heights[i]:
+                    height=ls.pop()
+                    res=max(height[-1]*(i-ls[-1][0]-1),heights[i]*(i-height[0]+1),res)
+                ls.append((i,heights[i]))
+        return res
