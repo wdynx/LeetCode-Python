@@ -1,0 +1,26 @@
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        if len(matrix)==0 or len(matrix[0])==0:
+            return 0
+        res=0
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j]=='0':
+                    matrix[i][j]=0
+                else:
+                    if i==0:
+                        matrix[i][j]=1
+                    else:
+                        matrix[i][j]=matrix[i-1][j]+1
+            ls=[(-1,0)]
+            heights=matrix[i]+[0]
+            for j in range(len(heights)):
+                if ls[-1][-1]<=heights[j]:
+                    ls.append((j,heights[j]))
+                    res=max(res,heights[j])
+                else:
+                    while ls[-1][-1]>heights[j]:
+                        height=ls.pop()
+                        res=max(height[-1]*(j-ls[-1][0]-1),heights[j]*(j-height[0]+1),res)
+                    ls.append((j,heights[j]))
+        return res
