@@ -1,0 +1,17 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        maxres=-float('inf')
+        curmax,curmin=0,0
+        for i in range(len(nums)):
+            if curmax==0:
+                curmax,curmin=nums[i],nums[i]
+            elif nums[i]==0:
+                curmax,curmin=0,0
+            else:
+                a=curmax*nums[i]
+                b=curmin*nums[i]
+                c=nums[i]
+                curmax,curmin=max(a,b,c),min(a,b,c)
+            if curmax>maxres:
+                maxres=curmax
+        return maxres
