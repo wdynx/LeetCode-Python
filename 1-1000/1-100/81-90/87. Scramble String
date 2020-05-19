@@ -1,0 +1,19 @@
+class Solution:
+    def isScramble(self, s1: str, s2: str) -> bool:
+        if len(s1)==1:
+            return s1==s2
+        set1l={}
+        set1r={}
+        set2l={}
+        flag=False
+        for i in range(len(s1)-1):
+            set1l[s1[i]]=set1l.get(s1[i],0)+1
+            set1r[s1[-1-i]]=set1r.get(s1[-1-i],0)+1
+            set2l[s2[i]]=set2l.get(s2[i],0)+1
+            if set1l==set2l:
+                flag=self.isScramble(s1[:i+1],s2[:i+1]) and self.isScramble(s1[i+1:],s2[i+1:])
+            if set1r==set2l:
+                flag=self.isScramble(s1[-i-1:],s2[:i+1]) and self.isScramble(s1[:-i-1],s2[i+1:])
+            if flag==True:
+                return True
+        return False
