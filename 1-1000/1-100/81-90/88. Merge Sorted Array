@@ -1,0 +1,14 @@
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        point1=m-1
+        point2=n-1
+        for i in range(len(nums1)-1,-1,-1):
+            if (nums1[point1] if point1>=0 else -float('inf')) > (nums2[point2] if point2>=0 else -float('inf')):
+                nums1[i]=nums1[point1]
+                point1-=1
+            else:
+                nums1[i]=nums2[point2]
+                point2-=1
