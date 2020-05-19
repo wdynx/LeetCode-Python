@@ -1,0 +1,8 @@
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        ls=[0]
+        for i in range(n):
+            ls.extend(ls[::-1])
+            for j in range(2**i,2<<i):
+                ls[j]+=2**i
+        return ls
