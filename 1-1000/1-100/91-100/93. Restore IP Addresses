@@ -1,0 +1,24 @@
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        def dfs(s,count,path,res):
+            if len(s)==0 and count==4:
+                res.append(path.copy())
+                return
+            if len(s)==0 or count>=4:
+                return
+            path.append(s[:1])
+            dfs(s[1:],count+1,path,res)
+            path.pop()
+            if s[0]=='0':
+                return
+            if len(s)>=2:
+                path.append(s[:2])
+                dfs(s[2:],count+1,path,res)
+                path.pop()
+            if len(s)>=3 and int(s[:3])<256:
+                path.append(s[:3])
+                dfs(s[3:],count+1,path,res)
+                path.pop()
+        res=[]
+        dfs(s,0,[],res)
+        return list(map(lambda x:'.'.join(x),res))
