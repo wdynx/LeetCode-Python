@@ -1,0 +1,20 @@
+class Solution:
+    def findTheLongestSubstring(self, s: str) -> int:
+        dic={'a':1,
+             'e':10,
+             'i':100,
+             'o':1000,
+             'u':10000}
+        stateDic={0:[-1]}
+        state=0
+        res=0
+        for i in range(len(s)):
+            if s[i] in dic.keys():
+                state^=dic[s[i]]
+            if state in stateDic.keys():
+                stateDic[state].append(i)
+                if i-stateDic[state][0]>res:
+                    res=i-stateDic[state][0]
+            else:
+                stateDic[state]=[i]
+        return res
