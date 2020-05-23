@@ -1,0 +1,27 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        def maxProfitOnce(prices):
+            if not prices:
+                return 0,0,0
+            minPrice=prices[0]
+            maxProfit1=0
+            left,right=0,0
+            curleft=0
+            for i in range(len(prices)):
+                if prices[i]<=minPrice:
+                    minPrice=prices[i]
+                    curleft=i
+                else:
+                    if prices[i]-minPrice>maxProfit1:
+                        maxProfit1=prices[i]-minPrice
+                        left,right=curleft,i
+            return maxProfit1,left,right
+        maxProfit1,left,right=maxProfitOnce(prices)
+        maxProfit2=[]
+        if left>0:
+            maxProfit2.append(maxProfitOnce(prices[:left])[0])
+        if right<len(prices)-1:
+            maxProfit2.append(maxProfitOnce(prices[right+1:])[0])
+        if right-left>2:
+            maxProfit2.append(maxProfitOnce(list(map(lambda x:-x,prices[left+1:right])))[0])
+        return maxProfit1+max(maxProfit2,default=0)
