@@ -1,0 +1,10 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        Min=2147483647
+        Max=0
+        for price in prices:
+            if price<Min:
+                Min=price
+            if price-Min>Max:
+                Max=price-Min
+        return Max
