@@ -1,0 +1,42 @@
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        nums=list(set(nums))
+        dic={}
+        res=0
+        for num in nums:
+            if num in dic.keys():
+                continue
+            elif num-1 not in dic.keys() and num+1 not in dic.keys():
+                left=num
+                right=num
+                dic[num]=[num,num]
+            elif num-1 not in dic.keys():
+                if dic[num+1][0]!=num+1:
+                    continue
+                left=num
+                right=dic[num+1][1]
+                dic[right][0]=left
+                dic[num]=[left,right]
+                if num+1!=right:
+                    del dic[num+1]
+            elif num+1 not in dic.keys():
+                if dic[num-1][1]!=num-1:
+                    continue
+                left=dic[num-1][0]
+                right=num
+                dic[left][1]=right
+                dic[num]=[left,right]
+                if num-1!=left:
+                    del dic[num-1]
+            else:
+                left=dic[num-1][0]
+                right=dic[num+1][1]
+                dic[left][1]=right
+                dic[right][0]=left
+                if num+1!=right:
+                    del dic[num+1]
+                if num-1!=left:
+                    del dic[num-1]
+            if right-left+1>res:
+                res=right-left+1
+        return res
