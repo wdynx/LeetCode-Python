@@ -1,0 +1,28 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = []):
+        self.val = val
+        self.neighbors = neighbors
+"""
+
+class Solution:
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        if not node:
+            return None
+        table={}
+        nodeSet={node.val}
+        ls=[node]
+        while ls:
+            curNode=ls.pop(0)
+            table[curNode.val]=[]
+            for neighbor in curNode.neighbors:
+                table[curNode.val].append(neighbor.val)
+                if neighbor.val not in nodeSet:
+                    nodeSet.add(neighbor.val)
+                    ls.append(neighbor)
+        ls=[Node(i) for i in range(1,1+len(table.keys()))]
+        for k,v in table.items():
+            for neighbor in v:
+                ls[k-1].neighbors.append(ls[neighbor-1])
+        return ls[node.val-1]
