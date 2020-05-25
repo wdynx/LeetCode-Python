@@ -1,0 +1,46 @@
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        if endWord not in wordList:
+            return 0
+        wordSet=set(wordList)|{beginWord}
+        def findNext(word1,wordSet,mode):
+            if mode==False:
+                res=set()
+                for word in wordSet:
+                    diff=0
+                    for i in range(len(word)):
+                        if word[i]!=word1[i]:
+                            diff+=1
+                            if diff>1:
+                                break
+                    if diff==1:
+                        res.add(word)
+                return res
+            if mode==True:
+                letters=list(map(chr,(range(ord('a'),ord('z')+1))))
+                ls=[l for l in word1]
+                res=set()
+                for i in range(len(ls)):
+                    for letter in letters:
+                        if letter!=ls[i]:
+                            newls=ls[:i]+[letter]+ls[i+1:]
+                            if ''.join(newls) in wordSet:
+                                res.add(''.join(newls))
+                return res
+        mode=len(wordSet)>26
+        reached={beginWord}
+        rest=wordSet-{beginWord}
+        curReached={beginWord}
+        cnt=1
+        while True:
+            cnt+=1
+            nextReach=set()
+            for node in curReached:
+                nextReach|=findNext(node,rest,mode)
+            if endWord in nextReach:
+                return cnt
+            if not nextReach:
+                return 0
+            curReached=nextReach
+            reached|=curReached
+            rest-=curReached
