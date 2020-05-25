@@ -1,0 +1,27 @@
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
+        ratings.append(float('inf'))
+        res=0
+        ls=[]
+        val=1
+        for rating in ratings:
+            if not ls:
+                ls.append(rating)
+            elif ls[-1]>rating:
+                ls.append(rating)
+            elif ls[-1]<rating:
+                while len(ls)>1:
+                    res+=max(val,len(ls))
+                    ls.pop(0)
+                    val=1
+                ls.pop(0)
+                ls.append(rating)
+                res+=val
+                val+=1
+            else:
+                while ls:
+                    res+=max(val,len(ls))
+                    ls.pop(0)
+                    val=1
+                ls.append(rating)
+        return res
