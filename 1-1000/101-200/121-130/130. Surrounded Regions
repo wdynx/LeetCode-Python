@@ -1,0 +1,34 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        if not board or not board[0]:
+            return
+        def dfs(board,i,j):
+            board[i][j]='.'
+            if i-1>=0 and board[i-1][j]=='O':
+                dfs(board,i-1,j)
+            if i+1<len(board) and board[i+1][j]=='O':
+                dfs(board,i+1,j)
+            if j-1>=0 and board[i][j-1]=='O':
+                dfs(board,i,j-1)
+            if j+1<len(board[0]) and board[i][j+1]=='O':
+                dfs(board,i,j+1)
+        for i in range(len(board)):
+            if board[i][0]=='O':
+                dfs(board,i,0)
+            if board[i][-1]=='O':
+                dfs(board,i,len(board[0])-1)
+        for j in range(len(board[0])):
+            if board[0][j]=='O':
+                dfs(board,0,j)
+            if board[-1][j]=='O':
+                dfs(board,len(board)-1,j)
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j]=='O':
+                    board[i][j]='X'
+                elif board[i][j]=='.':
+                    board[i][j]='O'
+        return
