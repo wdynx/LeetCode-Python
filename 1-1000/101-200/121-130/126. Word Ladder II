@@ -1,0 +1,70 @@
+class Solution:
+    def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+        def transform(a,b):
+            dif=0
+            for i in range(len(a)):
+                if a[i]!=b[i]:
+                    dif+=1
+                    if dif>=2:
+                        return False
+            return True
+        wordSet=set(wordList)-{beginWord}
+        if endWord not in wordSet:
+            return []
+        if transform(beginWord,endWord):
+            return [[beginWord,endWord]]
+        wordSet-={endWord}
+        reached1={beginWord}
+        reached2={endWord}
+        curReached1={beginWord}
+        curReached2={endWord}
+        info1={beginWord:[]}
+        info2={endWord:[]}
+        for word in wordSet:
+            info1[word]=[]
+            info2[word]=[]
+        for cnt in range(len(wordSet)):
+            nextReached1=set()
+            nextReached2=set()
+            for node in curReached1:
+                for nextNode in wordSet:
+                    if nextNode not in reached1 and transform(nextNode,node) and node!=nextNode:
+                        nextReached1.add(nextNode)
+                        info1[nextNode].append(node)
+            if not nextReached1:
+                return []
+            curReached1=nextReached1
+            reached1|=curReached1
+            if reached1&reached2:
+                break
+            for node in curReached2:
+                for nextNode in wordSet:
+                    if nextNode not in reached2 and transform(nextNode,node) and node!=nextNode:
+                        nextReached2.add(nextNode)
+                        info2[nextNode].append(node)
+            if not nextReached2:
+                return []
+            curReached2=nextReached2
+            reached2|=curReached2
+            if reached1&reached2:
+                break
+        points=reached1&reached2
+        print(points)
+        def dfs(info,node,beginWord,path,res):
+            path.append(node)
+            if node==beginWord:
+                res.append(path.copy())
+            for nextNode in info[node]:
+                dfs(info,nextNode,beginWord,path,res)
+            path.pop()
+        path=[]
+        res=[]
+        for point in points:
+            res1=[]
+            res2=[]
+            dfs(info1,point,beginWord,path,res1)
+            dfs(info2,point,endWord,path,res2)
+            for path1 in res1:
+                for path2 in res2:
+                    res.append(path1[::-1]+path2[1:])
+        return res
