@@ -1,0 +1,39 @@
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        def dfs(s,wordSet,path,res,minlen,maxlen):
+            if not s:
+                res.append(path.copy())
+                return
+            if len(s)<minlen:
+                return
+            for i in range(minlen,1+min(maxlen,len(s))):
+                if s[:i] in wordSet:
+                    path.append(s[:i])
+                    dfs(s[i:],wordSet,path,res,minlen,maxlen)
+                    path.pop()
+        if not wordDict:
+            return []
+        wordSet=set(wordDict)
+        minlen=min(list(map(len,wordDict)))
+        maxlen=max(list(map(len,wordDict)))
+        dp=[False]*(len(s)+1)
+        dp[0]=True
+        for i in range(1,len(dp)):
+            if i<minlen:
+                continue
+            elif i<maxlen:
+                for j in range(i-minlen+1):
+                    dp[i]=dp[j] and s[j:i] in wordSet
+                    if dp[i]:
+                        break
+            else:
+                for j in range(i-maxlen,i-minlen+1):
+                    dp[i]=dp[j] and s[j:i] in wordSet
+                    if dp[i]:
+                        break
+        if not dp[-1]:
+            return []
+        wordSet=set(wordDict)
+        res=[]
+        dfs(s,wordSet,[],res,minlen,maxlen)
+        return list(map(lambda x:' '.join(x),res))
