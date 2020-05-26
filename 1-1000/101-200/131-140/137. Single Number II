@@ -1,0 +1,7 @@
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        once=twice=0
+        for num in nums:
+            once=~twice&(once^num)
+            twice=~once&(twice^num)
+        return once
