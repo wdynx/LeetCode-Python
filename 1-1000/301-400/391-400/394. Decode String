@@ -1,0 +1,24 @@
+class Solution:
+    def decodeString(self, s: str) -> str:
+        ls=[]
+        i=0
+        while i<len(s):
+            if s[i].isalpha():
+                ls.append(s[i])
+            elif s[i].isdigit():
+                j=i+1
+                while s[j]!='[':
+                    j+=1
+                time=int(s[i:j])
+                cnt=1
+                k=j
+                while cnt>0:
+                    k+=1
+                    if s[k]=='[':
+                        cnt+=1
+                    elif s[k]==']':
+                        cnt-=1
+                ls.append(self.decodeString(s[j+1:k])*time)
+                i=k
+            i+=1
+        return ''.join(ls)
