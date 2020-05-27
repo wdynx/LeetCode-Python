@@ -1,0 +1,10 @@
+class Solution:
+    def subarraysDivByK(self, A: List[int], K: int) -> int:
+        dic={0:1}
+        Sum=0
+        cnt=0
+        for num in A:
+            Sum+=num
+            cnt+=dic.get((K-Sum)%K,0)
+            dic[(K-Sum)%K]=dic.get((K-Sum)%K,0)+1
+        return cnt
