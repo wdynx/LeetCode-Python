@@ -1,0 +1,9 @@
+class Solution:
+    def findMin(self, nums: List[int],left=-1,right=-1) -> int:
+        if left==right==-1:
+            left,right=0,len(nums)-1
+        if nums[left]<=nums[right]:
+            return nums[left]
+        else:
+            mid=(left+right)//2
+            return min(self.findMin(nums,left,mid),self.findMin(nums,mid+1,right))
