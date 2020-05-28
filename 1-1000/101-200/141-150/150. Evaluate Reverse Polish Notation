@@ -1,0 +1,17 @@
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        ls=[]
+        dic={
+            '+':lambda x,y:x+y,
+            '-':lambda x,y:x-y,
+            '*':lambda x,y:x*y,
+            '/':lambda x,y:(x//y if x*y>0 else -(-x//y))
+        }
+        for token in tokens:
+            try :
+                ls.append(int(token))
+            except ValueError:
+                b=ls.pop()
+                a=ls.pop()
+                ls.append(dic[token](a,b))
+        return ls[0]
