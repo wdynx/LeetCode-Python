@@ -1,0 +1,18 @@
+class Solution:
+    def convertToTitle(self, n: int) -> str:
+        dic={}
+        for i in range(ord('A'),ord('Z')+1):
+            dic[i-ord('A')]=chr(i)
+        digit=1
+        cnt=26
+        while n>cnt:
+            n-=cnt
+            cnt*=26
+            digit+=1
+        n-=1
+        res=[]
+        for i in range(digit):
+            n,mod=divmod(n,26)
+            res.append(dic[mod])
+        res.reverse()
+        return ''.join(res)
