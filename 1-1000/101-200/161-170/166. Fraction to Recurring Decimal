@@ -1,0 +1,28 @@
+from collections import OrderedDict
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        flag='' if numerator*denominator>=0 else '-'
+        numerator,denominator=abs(numerator),abs(denominator)
+        div,mod=divmod(numerator,denominator)
+        if mod==0:
+            return flag+str(div)
+        res=flag+str(div)+'.'
+        appeared=OrderedDict()
+        while mod:
+            div,newMod=divmod(10*mod,denominator)
+            appeared[mod]=div
+            if newMod in appeared.keys():
+                break
+            mod=newMod
+        flag=0
+        loop=[]
+        for item in appeared.items():
+            if item[0]==newMod:
+                flag=1
+            if flag==0:
+                res+=str(item[1])
+            if flag==1:
+                loop.append(str(item[1]))
+        if loop:
+            res+='('+''.join(loop)+')'
+        return res
