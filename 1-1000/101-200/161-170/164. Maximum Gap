@@ -1,0 +1,32 @@
+class Solution:
+    def maximumGap(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        Min=min(nums)
+        Max=max(nums)
+        scale=Max+1-Min
+        size=scale//len(nums)+int(scale%len(nums)>0)
+        bucket=[[] for _ in range(len(nums)+int(scale%len(nums)>0))]
+        for num in nums:
+            index=(num-Min)//size
+            if not bucket[index]:
+                bucket[index].append(num)
+            elif len(bucket[index])==1:
+                if num>bucket[index][0]:
+                    bucket[index].append(num)
+                else:
+                    bucket[index].insert(0,num)
+            else:
+                if num>bucket[index][1]:
+                    bucket[index][1]=num
+                elif num<bucket[index][0]:
+                    bucket[index][0]=num
+        res=0
+        for i in range(0,len(bucket)):
+            if not bucket[i]:
+                continue
+            else:
+                res=max(res,bucket[i][0]-Max)
+                Max=bucket[i][-1]
+                Min=bucket[i][0]
+        return res
