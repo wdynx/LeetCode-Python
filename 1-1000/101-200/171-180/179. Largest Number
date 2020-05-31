@@ -1,0 +1,15 @@
+class Solution:
+    def largestNumber(self, nums) -> str:
+        def change(num,n):
+            num=str(num)
+            while len(num)<n:
+                num+=num
+            return int(num[:n])
+        n=0
+        for num in nums:
+            curlen=len(str(num))
+            if curlen>n:
+                n=curlen
+        nums.sort(key=lambda x:change(x,2*n),reverse=True)
+        res=''.join(list(map(str,nums)))
+        return res if res[0]!='0' else res[-1]
