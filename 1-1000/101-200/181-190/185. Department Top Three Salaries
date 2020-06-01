@@ -1,0 +1,47 @@
+# Write your MySQL query statement below
+SELECT
+    d.Name AS Department,
+    e.Name AS Employee,
+    e.Salary
+FROM (
+    SELECT 
+        a.Salary,
+        a.DepartmentId
+    FROM (
+        SELECT DISTINCT 
+            Salary,
+            DepartmentId
+        FROM 
+            Employee
+    ) AS a
+    LEFT JOIN (
+        SELECT DISTINCT
+            Salary,
+            DepartmentId
+        FROM
+            Employee
+    ) AS b
+    ON
+        a.Salary<=b.Salary 
+    AND 
+        a.DepartmentId=b.DepartmentId
+    GROUP BY
+        a.Salary,
+        a.DepartmentId
+    HAVING COUNT(*)<=3
+) AS c
+LEFT JOIN 
+    Employee AS e
+ON 
+    e.Salary=c.Salary 
+AND 
+    e.DepartmentId=c.DepartmentId
+LEFT JOIN 
+    Department AS d
+ON
+    e.DepartmentId=d.Id
+WHERE
+    d.Id IS NOT NULL
+ORDER BY
+    e.DepartmentId,
+    e.Salary DESC
