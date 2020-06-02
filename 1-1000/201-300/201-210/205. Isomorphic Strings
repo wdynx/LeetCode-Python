@@ -1,0 +1,15 @@
+class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        dicS={}
+        dicT={}
+        cnt=0
+        for i in range(len(s)):
+            if s[i] not in dicS.keys() and t[i] not in dicT.keys():
+                dicS[s[i]]=cnt
+                dicT[t[i]]=cnt
+                cnt+=1
+            elif s[i] not in dicS.keys() or t[i] not in dicT.keys():
+                return False
+            elif dicS[s[i]]!=dicT[t[i]]:
+                return False
+        return True
