@@ -1,0 +1,15 @@
+class Solution:
+    def rangeBitwiseAnd(self, m: int, n: int) -> int:
+        if m==n:
+            return m
+        length=n-m+1
+        lim=[2**i for i in range(31)]
+        for i in range(len(lim)-1,-1,-1):
+            if n<lim[i]:
+                lim[i]=0
+            elif m<lim[i]<=n:
+                break
+            else:
+                m-=lim[i]
+                n-=lim[i]
+        return sum(lim[i+1:])
