@@ -1,0 +1,47 @@
+class WordDictionary:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.dic={}
+
+    def addWord(self, word: str) -> None:
+        """
+        Adds a word into the data structure.
+        """
+        def helper(word,dic):
+            if not word:
+                dic[0]=0
+                return
+            if word[0] not in dic.keys():
+                dic[word[0]]={}
+            helper(word[1:],dic[word[0]])
+        helper(word,self.dic)
+
+    def search(self, word: str) -> bool:
+        """
+        Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
+        """
+        def helper(word,dic):
+            if not word:
+                return 0 in dic.keys()
+            if word[0]!='.':
+                if word[0] not in dic.keys():
+                    return False
+                else:
+                    return helper(word[1:],dic[word[0]])
+            else:
+                for key in dic.keys():
+                    if key!=0:
+                        res=helper(word[1:],dic[key])
+                        if res:
+                            return True
+                return False
+        return helper(word,self.dic)
+
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
