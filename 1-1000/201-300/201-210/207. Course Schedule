@@ -1,0 +1,28 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites) -> bool:
+        def dfs(i,dic,checked,path,flag):
+            path.add(i)
+            for course in dic[i]:
+                if course in path:
+                    flag[0]=False
+                    return
+                else:
+                    dfs(course,dic,checked,path,flag)
+                if not flag[0]:
+                    return
+            path.remove(i)
+        if numCourses==0:
+            return False
+        checked=[False]*numCourses
+        dic={}
+        for i in range(numCourses):
+            dic[i]=set()
+        for prerequisite in prerequisites:
+            dic[prerequisite[0]].add(prerequisite[1])
+        flag=[True]
+        for i in range(numCourses):
+            if not checked[i]:
+                dfs(i,dic,checked,set(),flag)
+                if flag[0]==False:
+                    return False
+        return True
