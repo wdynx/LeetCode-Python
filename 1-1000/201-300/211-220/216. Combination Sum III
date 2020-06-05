@@ -1,0 +1,12 @@
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+        def helper(start,k,n,path,res):
+            for i in range(start,min(9,n)+1):
+                path.append(i)
+                if n==i and k==1:
+                    res.append(path.copy())
+                helper(i+1,k-1,n-i,path,res)
+                path.pop()
+        res=[]
+        helper(1,k,n,[],res)
+        return res
