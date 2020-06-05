@@ -1,0 +1,30 @@
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix or not matrix[0]:
+            return []
+        height=len(matrix)
+        width=len(matrix[0])
+        res=[]
+        cnt=height*width
+        for layer in range((height+1)//2):
+            for i in range(layer,width-layer):
+                res.append(matrix[layer][i])
+            cnt-=width-layer*2
+            if cnt==0:
+                break
+            for i in range(layer+1,height-layer):
+                res.append(matrix[i][width-layer-1])
+            cnt-=height-layer*2-1
+            if cnt==0:
+                break
+            for i in range(width-layer-2,layer-1,-1):
+                res.append(matrix[height-layer-1][i])
+            cnt-=width-2*layer-1
+            if cnt==0:
+                break
+            for i in range(height-layer-2,layer,-1):
+                res.append(matrix[i][layer])
+            cnt-=height-2*layer-2
+            if cnt==0:
+                break
+        return res
