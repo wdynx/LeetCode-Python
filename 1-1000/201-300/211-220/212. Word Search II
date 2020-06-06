@@ -1,0 +1,45 @@
+class Solution:
+    def findWords(self, board, words):
+        def trie(words):
+            dic={}
+            for word in words:
+                curdic=dic
+                for i in word:
+                    if i not in curdic.keys():
+                        curdic[i]={}
+                    curdic=curdic[i]
+                curdic[0]=0
+            return dic
+        def helper(board,i,j,myTrie,path,res):
+            if 0 in myTrie.keys():
+                res.append(path.copy())
+            temp=board[i][j]
+            board[i][j]=-1
+            if i>0 and board[i-1][j] in myTrie.keys():
+                path.append(board[i-1][j])
+                helper(board,i-1,j,myTrie[board[i-1][j]],path,res)
+                path.pop()
+            if j>0 and board[i][j-1] in myTrie.keys():
+                path.append(board[i][j-1])
+                helper(board,i,j-1,myTrie[board[i][j-1]],path,res)
+                path.pop()
+            if i<len(board)-1 and board[i+1][j] in myTrie.keys():
+                path.append(board[i+1][j])
+                helper(board,i+1,j,myTrie[board[i+1][j]],path,res)
+                path.pop()
+            if j<len(board[0])-1 and board[i][j+1] in myTrie.keys():
+                path.append(board[i][j+1])
+                helper(board,i,j+1,myTrie[board[i][j+1]],path,res)
+                path.pop()
+            board[i][j]=temp
+
+        myTrie=trie(words)
+        if not board or not board[0]:
+            return []
+        res=[]
+        for item in myTrie.copy().items():
+            for i in range(len(board)):
+                for j in range(len(board[0])):
+                    if board[i][j]==item[0]:
+                        helper(board,i,j,item[1],[item[0]],res)
+        return list(set(map(lambda x:''.join(x),res)))
