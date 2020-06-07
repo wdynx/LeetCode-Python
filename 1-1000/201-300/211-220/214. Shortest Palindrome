@@ -1,0 +1,8 @@
+class Solution:
+    def shortestPalindrome(self, s: str) -> str:
+        if not s:
+            return ''
+        new_s=s[::-1]
+        for i in range(len(s),0,-1):
+            if s[:i]==new_s[-i:]:
+                return new_s+s[i:]
