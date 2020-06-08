@@ -1,0 +1,33 @@
+class Solution:
+    def getSkyline(self, buildings):
+        if not buildings:
+            return []
+        buildings.append([float('inf'),float('inf'),0])
+        right_dic={}#右边界对应高度
+        heights={}#当前高度数
+        res=[]
+        for building in buildings:
+            pass_key=set()
+            for key in sorted(list(right_dic.keys())):
+                if key<=building[0]:
+                    pass_key.add(key)
+                    for height in right_dic[key]:
+                        heights[height]-=1
+                        if heights[height]==0:
+                            del heights[height]
+                    if key<building[0]:
+                        if not res or res[-1][-1]!=max(heights.keys(),default=0):
+                            res.append([key,max(heights.keys(),default=0)])
+                else:
+                    break
+            for key in pass_key:
+                del right_dic[key]
+            heights[building[2]]=heights.get(building[2],0)+1
+            if building[1] not in right_dic.keys():
+                right_dic[building[1]]=[]
+            right_dic[building[1]].append(building[2])
+            if res and res[-1][0]==building[0]:
+                res[-1][-1]=max(res[-1][-1],building[2])
+            if not res or res[-1][-1]!=max(heights.keys(),default=0):
+                res.append([building[0],max(heights.keys())])
+        return res
