@@ -1,0 +1,18 @@
+class Solution:
+    def equationsPossible(self, equations) -> bool:
+        equal_dic={}
+        for equation in equations:
+            if equation[0] not in equal_dic.keys():
+                equal_dic[equation[0]]={equation[0]}
+            if equation[3] not in equal_dic.keys():
+                equal_dic[equation[3]]={equation[3]}
+            if equation[1]=='=':
+                equal_dic[equation[0]]|=equal_dic[equation[3]]
+                equal_dic[equation[3]]=equal_dic[equation[0]]
+        for equation in equations:
+            if equation[1]=='!':
+                if equation[0] in equal_dic[equation[3]]:
+                    return False
+                elif  equation[3] in equal_dic[equation[0]]:
+                    return False
+        return True
