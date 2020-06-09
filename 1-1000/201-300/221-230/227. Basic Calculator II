@@ -1,0 +1,32 @@
+class Solution:
+    def calculate(self, s: str) -> int:
+        new_s=[]
+        syms={'+':lambda a,b:a+b,
+              '-':lambda a,b:a-b,
+              '*':lambda a,b:a*b,
+              '/':lambda a,b:a//b}
+        for i in s:
+            if i==' ':
+                continue
+            elif i in syms.keys():
+                new_s.append(i)
+            else:
+                if new_s and new_s[-1] not in syms.keys():
+                    new_s[-1]+=i
+                else:
+                    new_s.append(i)
+        stack=[]
+        for i in new_s:
+            if i not in syms.keys() and stack and stack[-1] in {'*','/'}:
+                sym=stack.pop()
+                a=stack.pop()
+                i=str(syms[sym](int(a),int(i)))
+            stack.append(i)
+        new_s,stack=stack,[]
+        for i in new_s:
+            if i not in syms.keys() and stack:
+                sym=stack.pop()
+                a=stack.pop()
+                i=str(syms[sym](int(a),int(i)))
+            stack.append(i)
+        return int(stack[0])
