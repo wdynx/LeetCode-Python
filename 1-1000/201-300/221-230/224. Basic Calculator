@@ -1,0 +1,37 @@
+class Solution:
+    def calculate(self, s: str) -> int:
+        new_s=[]
+        for i in range(len(s)):
+            if s[i].isdigit() and new_s and new_s[-1].isdigit():
+                new_s[-1]+=s[i]
+            else:
+                new_s.append(s[i]) 
+        stack=[]
+        cal=lambda a,sym,b:str(int(a)-int(b)) if sym=='-' else str(int(a)+int(b))
+        for i in new_s:
+            if i==' ':
+                continue
+            elif i=='(' or i=='+' or i=='-':
+                stack.append(i)
+            elif i==')':
+                b=stack.pop()
+                stack.pop()
+                if stack:
+                    sym=stack.pop()
+                    a=stack.pop()
+                    b=cal(a,sym,b)
+                stack.append(b)
+            else:
+                if stack:
+                    if stack[-1]=='(':
+                        stack.append(i)
+                    elif stack[-1]=='+' or stack[-1]=='-':
+                        sym=stack.pop()
+                        a=stack.pop()
+                        i=cal(a,sym,i)
+                        stack.append(i)
+                    else:
+                        stack[-1]+=i
+                else:
+                    stack.append(i)
+        return int(stack[0])
