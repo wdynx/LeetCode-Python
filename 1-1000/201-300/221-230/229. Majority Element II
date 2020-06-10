@@ -1,0 +1,18 @@
+class Solution:
+    def majorityElement(self, nums: List[int]) -> List[int]:
+        max3={}
+        for num in nums:
+            if num in max3.keys():
+                max3[num]+=1
+            elif len(max3.keys())<2:
+                max3[num]=1
+            else:
+                for key in max3.copy().keys():
+                    max3[key]-=1
+                    if max3[key]==0:
+                        del max3[key]
+        res=[]
+        for key in max3.keys():
+            if nums.count(key)>len(nums)//3:
+                res.append(key)
+        return res
