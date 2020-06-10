@@ -1,0 +1,21 @@
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        res=[]
+        main_queue=[]
+        max_queue=[]
+        for num in nums[:k]:
+            main_queue.append(num)
+            while max_queue and max_queue[-1]<num:
+                max_queue.pop()
+            max_queue.append(num)
+        res.append(max_queue[0])
+        for num in nums[k:]:
+            last=main_queue.pop(0)
+            if last==max_queue[0]:
+                max_queue.pop(0)
+            main_queue.append(num)
+            while max_queue and max_queue[-1]<num:
+                max_queue.pop()
+            max_queue.append(num)
+            res.append(max_queue[0])
+        return res
