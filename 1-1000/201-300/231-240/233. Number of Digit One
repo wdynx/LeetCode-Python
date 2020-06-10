@@ -1,0 +1,15 @@
+class Solution:
+    def countDigitOne(self, n: int) -> int:
+        if n<=0:
+            return 0
+        str_n=str(n)
+        length=len(str_n)
+        res=0
+        for i in range(length):
+            if i!=0:
+                res+=int(str_n[:i])*10**(length-1-i)
+            if str_n[i]=='1':
+                res+=n%10**(length-1-i)+1
+            elif str_n[i]!='0':
+                res+=10**(length-1-i)
+        return res
