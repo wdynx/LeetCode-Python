@@ -1,0 +1,9 @@
+class Solution:
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        res=[]
+        for num in nums:
+            if not res or res[-1][-1]<num-1:
+                res.append([num,num])
+            else:
+                res[-1][-1]=num
+        return list(map(lambda x:str(x[0]) if x[1]==x[0] else str(x[0])+'->'+str(x[1]),res))
