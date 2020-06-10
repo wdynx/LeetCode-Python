@@ -1,0 +1,10 @@
+class Solution:
+    def dailyTemperatures(self, T: List[int]) -> List[int]:
+        res=[0]*len(T)
+        stack=[]
+        for i in range(len(T)):
+            while stack and stack[-1][-1]<T[i]:
+                index,_=stack.pop()
+                res[index]=i-index
+            stack.append((i,T[i]))
+        return res
