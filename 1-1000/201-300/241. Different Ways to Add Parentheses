@@ -1,0 +1,34 @@
+class Solution:
+    def diffWaysToCompute(self, input: str) -> List[int]:
+        def helper(ls,left,right):
+            if right-left==1:
+                return [ls[left]]
+            res=[]
+            for i in range(left+1,right,2):
+                left_set=helper(ls,left,i)
+                right_set=helper(ls,i+1,right)
+                for left_val in left_set:
+                    for right_val in right_set:
+                        res.append(sym_dic[ls[i]](left_val,right_val))
+            return res
+        sym_dic={
+            '+':lambda a,b:a+b,
+            '-':lambda a,b:a-b,
+            '*':lambda a,b:a*b
+        }
+        ls=[]
+        for char in input:
+            if char==' ':
+                continue
+            elif char in sym_dic.keys():
+                ls.append(char)
+            else:
+                if ls and ls[-1] not in sym_dic.keys():
+                    ls[-1]+=char
+                else:
+                    ls.append(char)
+        for i in range(len(ls)):
+            if ls[i].isdigit():
+                ls[i]=int(ls[i])
+        res=helper(ls,0,len(ls))
+        return res
