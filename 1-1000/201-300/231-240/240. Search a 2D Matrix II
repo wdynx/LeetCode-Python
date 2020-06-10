@@ -1,0 +1,21 @@
+class Solution:
+    def searchMatrix(self, matrix, target,up=None,down=None,left=None,right=None):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        if not matrix:
+            return False
+        if up is None:
+            up,down,left,right=0,len(matrix),0,len(matrix[0])
+        if left>=right or up>=down:
+            return False
+        mid_1=(up+down)//2
+        mid_2=(left+right)//2
+        if matrix[mid_1][mid_2]==target:
+            return True
+        elif matrix[mid_1][mid_2]<target:
+            return self.searchMatrix(matrix,target,up,mid_1+1,mid_2+1,right) or self.searchMatrix(matrix,target,mid_1+1,down,left,mid_2+1) or self.searchMatrix(matrix,target,mid_1+1,down,mid_2+1,right)
+        else:
+            return self.searchMatrix(matrix,target,up,mid_1,mid_2,right) or self.searchMatrix(matrix,target,mid_1,down,left,mid_2) or self.searchMatrix(matrix,target,up,mid_1,left,mid_2)
