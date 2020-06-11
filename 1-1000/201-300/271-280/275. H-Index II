@@ -1,0 +1,14 @@
+class Solution:
+    def hIndex(self, citations: List[int]) -> int:
+        if not citations:
+            return 0
+        left,right=0,len(citations)
+        if citations[left]>=len(citations):
+            return len(citations)
+        while right-left>1:
+            mid=(left+right)//2
+            if len(citations)-mid<=citations[mid]:
+                right=mid
+            else:
+                left=mid
+        return len(citations)-right
