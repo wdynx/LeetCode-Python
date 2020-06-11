@@ -1,0 +1,17 @@
+import heapq
+class Solution:
+    def nthUglyNumber(self, n: int) -> int:
+        if n==1:
+            return 1
+        ls=[1]
+        heapq.heapify(ls)
+        nodes=set()
+        for i in range(n):
+            node=heapq.heappop(ls)
+            while nodes and node in nodes:
+                node=heapq.heappop(ls)
+            nodes.add(node)
+            heapq.heappush(ls,node*2)
+            heapq.heappush(ls,node*3)
+            heapq.heappush(ls,node*5)
+        return max(nodes)
