@@ -1,0 +1,19 @@
+class Solution:
+    def wordPattern(self, pattern: str, str: str) -> bool:
+        words=str.split(' ')
+        if len(words)!=len(pattern):
+            return False
+        dic1={}
+        dic2={}
+        for i in range(len(pattern)):
+            if pattern[i] not in dic1.keys() and words[i] in dic2.keys():
+                return False
+            elif pattern[i] in dic1.keys() and words[i] not in dic2.keys():
+                return False
+            elif pattern[i] not in dic1.keys() and words[i] not in dic2.keys():
+                dic1[pattern[i]]=i
+                dic2[words[i]]=i
+            else:
+                if dic1[pattern[i]]!=dic2[words[i]]:
+                    return False
+        return True
