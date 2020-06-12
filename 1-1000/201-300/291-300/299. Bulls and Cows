@@ -1,0 +1,14 @@
+class Solution:
+    def getHint(self, secret: str, guess: str) -> str:
+        Bulls,Cows=0,0
+        dic={}
+        for i in range(len(secret)):
+            if secret[i]==guess[i]:
+                Bulls+=1
+            dic[secret[i]]=dic.get(secret[i],0)+1
+        for letter in guess:
+            if letter in dic.keys() and dic[letter]>0:
+                Cows+=1
+                dic[letter]-=1
+        Cows-=Bulls
+        return str(Bulls)+'A'+str(Cows)+'B'
