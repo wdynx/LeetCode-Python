@@ -1,0 +1,42 @@
+import itertools
+class Solution:
+    def addOperators(self, num: str, target: int):
+        if not num:
+            return []
+        sym_level={0:['','*','+','-'],1:['*','+','-'],2:['+','-']}
+        express={}
+        for diff in range(0,len(num)):
+            for start in range(0,len(num)-diff):
+                if diff==0:
+                    express[(start,start)]={(0,int(num[start]),num[start])}
+                else:
+                    express[(start,start+diff)]=set()
+                    for i in range(start,start+diff):
+                        for left_level,left_value,left_exp in express[(start,i)]:
+                            for right_level,right_value,right_exp in express[(i+1,start+diff)]:
+                                cur_level=max(left_level,right_level)
+                                for cur_sym in sym_level[cur_level]:
+                                    if cur_sym=='':
+                                        if left_exp=='0':
+                                            continue
+                                        cur_exp=left_exp+right_exp
+                                        cur_value=int(cur_exp)
+                                        item=(0,cur_value,cur_exp)
+                                    elif cur_sym=='*':
+                                        cur_exp=left_exp+'*'+right_exp
+                                        cur_value=left_value*right_value
+                                        item=(1,cur_value,cur_exp)
+                                    elif cur_sym=='+':
+                                        cur_exp=left_exp+'+'+right_exp
+                                        cur_value=left_value+right_value
+                                        item=(2,cur_value,cur_exp)
+                                    else:
+                                        cur_exp=left_exp+'-'+right_exp.replace('+','.').replace('-','+').replace('.','-')
+                                        cur_value=left_value-right_value
+                                        item=(2,cur_value,cur_exp)
+                                    express[(start,start+diff)].add(item)
+        res=[]
+        for _,val,exp in express[(0,len(num)-1)]:
+            if val==target:
+                res.append(exp)
+        return res
