@@ -1,0 +1,17 @@
+class Solution:
+    def findBestValue(self, arr: List[int], target: int) -> int:
+        if sum(arr)<=target:
+            return max(arr)
+        arr.sort()
+        for i in range(len(arr)):
+            if arr[i]*(len(arr)-i)<=target:
+                target-=arr[i]
+            else:
+                left=target//(len(arr)-i)
+                right=left+1
+                left_abs=target-left*(len(arr)-i)
+                right_abs=right*(len(arr)-i)-target
+                if left_abs<=right_abs:
+                    return left
+                else:
+                    return right
