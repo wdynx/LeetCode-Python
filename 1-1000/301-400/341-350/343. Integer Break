@@ -1,0 +1,10 @@
+class Solution:
+    def integerBreak(self, n: int) -> int:
+        def get_res(n,num):
+            if num<=1:
+                return 0
+            big_num=n-n//num*num
+            small_num=num-big_num
+            return (n//num)**small_num*(n//num+1)**big_num
+        num=int(n/2.718)
+        return max(get_res(n,num-1),get_res(n,num),get_res(n,num+1),get_res(n,num+2))
