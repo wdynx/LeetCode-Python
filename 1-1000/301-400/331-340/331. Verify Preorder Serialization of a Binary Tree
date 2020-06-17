@@ -1,0 +1,12 @@
+class Solution:
+    def isValidSerialization(self, preorder: str) -> bool:
+        node_count, leaf_count=0, 0
+        preorder_split=preorder.split(',')
+        for i in range(len(preorder_split)):
+            if preorder_split[i]=='#':
+                leaf_count+=1
+            else:
+                node_count+=1
+            if leaf_count - node_count==1:
+                return i==len(preorder_split)-1
+        return leaf_count - node_count==1
