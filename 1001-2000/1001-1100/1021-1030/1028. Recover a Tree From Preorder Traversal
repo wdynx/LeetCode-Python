@@ -1,0 +1,42 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def recoverFromPreorder(self, S: str) -> TreeNode:
+        if not S:
+            return None
+        depth_dic={}
+        node_val_list=[int(i) for i in S.split('-') if i!='']
+        cnt=0
+        depth_dic[0]=0
+        pos=1
+        for i in S:
+            if i=='-':
+                cnt+=1
+            else:
+                if cnt!=0:
+                    depth_dic[pos]=cnt
+                    pos+=1
+                    cnt=0
+        tree_list=[]
+        for i in range(len(node_val_list)):
+            if depth_dic[i]==len(tree_list):
+                tree_list.append(TreeNode(node_val_list[i]))
+            else:
+                while depth_dic[i]!=len(tree_list):
+                    tree_node=tree_list.pop()
+                    if tree_list[-1].left is None:
+                        tree_list[-1].left=tree_node
+                    else:
+                        tree_list[-1].right=tree_node
+                tree_list.append(TreeNode(node_val_list[i]))
+        for i in range(len(tree_list)-1):
+            if tree_list[i].left is None:
+                tree_list[i].left=tree_list[i+1]
+            else:
+                tree_list[i].right=tree_list[i+1]
+        return tree_list[0]
