@@ -1,0 +1,26 @@
+class Solution:
+    def removeInvalidParentheses(self, s: str) -> List[str]:
+        def isvalid(string):
+            cnt=0
+            for i in string:
+                if i=='(':
+                    cnt+=1
+                elif i==')':
+                    cnt-=1
+                if cnt<0:
+                    return False
+            return cnt==0
+        if isvalid(s):
+            return [s]
+        cur_set={s}
+        res=[]
+        while not res:
+            next_set=set()
+            for string in cur_set:
+                for i in range(len(string)):
+                    if string[i]=='(' or string[i]==')':
+                        next_set.add(string[:i]+string[i+1:])
+            cur_set=next_set
+            res=list(filter(isvalid,cur_set))
+            
+        return res
