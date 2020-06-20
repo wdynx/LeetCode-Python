@@ -1,0 +1,39 @@
+import heapq
+class Solution:
+    def wiggleSort(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        if len(nums)<2:
+            return nums
+        odd=len(nums)%2
+        small=[]
+        big=[]
+        heapq.heapify(small)
+        heapq.heapify(big)
+        for num in nums:
+            if len(small)==len(big):
+                new_num=heapq.heappushpop(big,num)
+                heapq.heappush(small,-new_num)
+            else:
+                new_num=heapq.heappushpop(small,-num)
+                heapq.heappush(big,-new_num)
+        if odd:
+            mid=-small[0]
+        else:
+            mid=(big[0]-small[0])/2
+        ls=[float('inf')]*len(nums)
+        big_pos=1
+        small_pos=len(nums)-2+odd
+        for num in nums:
+            if num<mid:
+                ls[small_pos]=num
+                small_pos-=2
+            elif num>mid:
+                ls[big_pos]=num
+                big_pos+=2
+        for i in range(len(ls)):
+            if ls[i]==float('inf'):
+                ls[i]=int(mid)
+        for i in range(len(ls)):
+            nums[i]=ls[i]
