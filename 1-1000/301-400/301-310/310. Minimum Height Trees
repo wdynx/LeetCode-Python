@@ -1,0 +1,25 @@
+class Solution:
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
+        if n==1:
+            return [0]
+        dic={}
+        node_set=set()
+        for edge in edges:
+            if edge[0] not in dic.keys():
+                dic[edge[0]]={edge[1]}
+            else:
+                dic[edge[0]].add(edge[1])
+            if edge[1] not in dic.keys():
+                dic[edge[1]]={edge[0]}
+            else:
+                dic[edge[1]].add(edge[0])
+            node_set|={edge[0],edge[1]}
+        while len(node_set)>2:
+            to_remove=set()
+            for node in node_set:
+                if len(dic[node])==1:
+                    to_remove.add(node)
+            for node in dic.keys():
+                dic[node]-=to_remove
+            node_set-=to_remove
+        return list(node_set)
