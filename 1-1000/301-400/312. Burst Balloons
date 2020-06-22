@@ -1,0 +1,18 @@
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        dp=[[0]*len(nums) for _ in range(len(nums))]
+        for i in range(len(nums)):
+            for j in range(0,len(nums)-i):
+                left_val=(nums[j-1] if j>0 else 1)
+                right_val=(nums[j+i+1] if j+i+1<len(nums) else 1)
+                if i==0:
+                    dp[j][j] = nums[j] * left_val * right_val
+                else:
+                    cur_val=0
+                    for k in range(j,j+i+1):
+                        cur_val = nums[k] * left_val * right_val + (dp[j][k-1] if k>j else 0) + (dp[k+1][j+i] if k<i+j else 0)
+                        if cur_val>dp[j][j+i]:
+                            dp[j][j+i]=cur_val
+        return dp[0][len(nums)-1]
