@@ -1,0 +1,12 @@
+import heapq
+class Solution:
+    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
+        ls=[1]
+        next_ls=[(prime, prime, 0) for prime in primes]
+        heapq.heapify(next_ls)
+        while len(ls) < n:
+            val, prime, index=heapq.heappop(next_ls)
+            if val > ls[-1]:
+                ls.append(val)
+            heapq.heappush(next_ls, (prime * ls[index + 1], prime, index + 1))
+        return ls[-1]
