@@ -1,0 +1,40 @@
+import copy
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        num_index=[[nums[i], i, 0] for i in range(len(nums))]
+        def helper(num_index, left, right):
+            if right - left <= 1:
+                return 
+            else:
+                mid = (left + right) // 2
+                helper(num_index, left, mid)
+                helper(num_index, mid, right)
+                num_copy=copy.deepcopy(num_index[left:right])
+                # print(num_copy)
+                p1, p2, p3=0, mid - left, left
+                while p1 != mid - left and p2 != right - left:
+                    # print(p1, p2)
+                    if num_copy[p1][0] <= num_copy[p2][0]:
+                        num_index[p3][0] = num_copy[p1][0]
+                        num_index[p3][1] = num_copy[p1][1]
+                        num_index[p3][2] = num_copy[p1][2]+p2-mid+left
+                        p1 += 1
+                        p3 += 1
+                    else:
+                        num_index[p3][0] = num_copy[p2][0]
+                        num_index[p3][1] = num_copy[p2][1]
+                        num_index[p3][2] = num_copy[p2][2]
+                        p2 += 1
+                        p3 += 1
+                if p2 == right - left:
+                    while p1 != mid -left:
+                        num_index[p3][0] = num_copy[p1][0]
+                        num_index[p3][1] = num_copy[p1][1]
+                        num_index[p3][2] = num_copy[p1][2]+p2-mid+left
+                        p1 += 1
+                        p3 += 1
+        helper(num_index, 0, len(num_index))
+        res=[0]*len(nums)
+        for _, idx, val in num_index:
+            res[idx]=val
+        return res
