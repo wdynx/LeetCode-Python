@@ -1,0 +1,18 @@
+class Solution:
+    def removeDuplicateLetters(self, s: str) -> str:
+        pos_dic={}
+        used=set()
+        for i in range(len(s)):
+            if s[i] not in pos_dic.keys():
+                pos_dic[s[i]]=[]
+            pos_dic[s[i]].append(i)
+        stack=[]
+        for i in range(len(s)):
+            if s[i] in used:
+                continue
+            while stack and ord(stack[-1])>=ord(s[i]) and pos_dic[stack[-1]][-1]>i:
+                used.remove(stack[-1])
+                stack.pop()
+            stack.append(s[i])
+            used.add(s[i])
+        return ''.join(stack)
