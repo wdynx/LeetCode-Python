@@ -1,0 +1,62 @@
+class Solution:
+    def maxNumber(self, nums1: List[int], nums2: List[int], k: int) -> List[int]:
+        def mycmp(nums1, nums2):
+            nums1.append(-1)
+            nums2.append(-1)
+            i, j=0, 0
+            while nums1[i]==nums2[j]:
+                i+=1
+                j+=1
+                if i == len(nums1):
+                    return True
+            return nums1[i]>nums2[j]
+        def concat(nums1, nums2):
+            res=[]
+            i, j = 0, 0
+            # print(nums1, nums2)
+            while len(res)<len(nums1)+len(nums2):
+                # print(i,j)
+                if mycmp(nums1[i:], nums2[j:])>0:
+                    res.append(nums1[i])
+                    i+=1
+                else:
+                    res.append(nums2[j])
+                    j+=1
+            return int(''.join(map(str,res)))
+        max_case_1=[None]*len(nums1)
+        max_case_2=[None]*len(nums2)
+        cur=nums1.copy()
+        pos=len(nums1)-1
+        while pos>=0:
+            max_case_1[pos]=cur.copy()
+            pos-=1
+            for i in range(len(cur)):
+                if i==len(cur)-1:
+                    cur.pop()
+                    break
+                elif cur[i]<cur[i+1]:
+                    cur.pop(i)
+                    break
+        cur=nums2.copy()
+        pos=len(nums2)-1
+        while pos>=0:
+            max_case_2[pos]=cur.copy()
+            pos-=1
+            for i in range(len(cur)):
+                if i==len(cur)-1:
+                    cur.pop()
+                    break
+                elif cur[i]<cur[i+1]:
+                    cur.pop(i)
+                    break
+        max_res=0
+        for i in range(max(0, k-len(nums2)), min(k+1, len(nums1)+1)):
+            if i==0:
+                cur=concat([], max_case_2[k-i-1])
+            elif i==k:
+                cur=concat(max_case_1[i-1], [])
+            else:
+                cur=concat(max_case_1[i-1], max_case_2[k-1-i])
+            if cur>max_res:
+                max_res=cur
+        return [int(i) for i in str(max_res)]
