@@ -1,0 +1,55 @@
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        if not matrix:
+            return 0
+        if len(matrix) == len(matrix[0]) == 1:
+            return 1
+        dic = {}
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if i < len(matrix)-1:
+                    a = (i, j)
+                    b = (i+1, j)
+                    if matrix[a[0]][a[1]] > matrix[b[0]][b[1]]:
+                        dic[a] = dic.get(a, 0) + 1
+                        dic[b] = dic.get(b, 0)
+                    elif matrix[a[0]][a[1]] == matrix[b[0]][b[1]]:
+                        dic[a] = dic.get(a, 0)
+                        dic[b] = dic.get(b, 0)
+                    else:
+                        dic[a] = dic.get(a, 0)
+                        dic[b] = dic.get(b, 0) + 1
+                if j < len(matrix[0])-1:
+                    a = (i, j)
+                    b = (i, j+1)
+                    if matrix[a[0]][a[1]] > matrix[b[0]][b[1]]:
+                        dic[a] = dic.get(a, 0) + 1
+                        dic[b] = dic.get(b, 0)
+                    elif matrix[a[0]][a[1]] == matrix[b[0]][b[1]]:
+                        dic[a] = dic.get(a, 0)
+                        dic[b] = dic.get(b, 0)
+                    else:
+                        dic[a] = dic.get(a, 0)
+                        dic[b] = dic.get(b, 0) + 1
+        # print(dic)
+        rnd = 0
+        reached = set()
+        to_reach = set()
+        for item in dic.items():
+            if item[1] == 0:
+                to_reach.add(item[0])
+        rest = set(dic.keys()) - to_reach
+        while len(reached) < len(matrix)*len(matrix[0]):
+            rnd+=1
+            reached |= to_reach
+            to_reach_copy = to_reach.copy()
+            to_reach = set()
+            for point in to_reach_copy:
+                for neighbor in {(point[0]+1, point[1]),(point[0]-1, point[1]),(point[0], point[1]+1),(point[0], point[1]-1)}:
+                    if neighbor in rest and matrix[neighbor[0]][neighbor[1]] > matrix[point[0]][point[1]]:
+                        dic[neighbor] -= 1
+                        if dic[neighbor] == 0:
+                            rest.remove(neighbor)
+                            to_reach.add(neighbor)
+            # print(reached)
+        return rnd
