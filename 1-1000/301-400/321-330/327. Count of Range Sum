@@ -1,0 +1,42 @@
+class Solution:
+    def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
+        if not nums:
+            return 0
+        presum=[0]
+        for num in nums:
+            presum.append(presum[-1]+num)
+        # print(presum)
+        def mergesort(nums, res):
+            length=len(nums)
+            if length==1:
+                return nums
+            left=mergesort(nums[:length//2], res)
+            right=mergesort(nums[length//2:], res)
+
+            cur=0
+            upper_point, lower_point = 0, 0
+            while cur < len(left):
+                while lower_point<len(right) and right[lower_point] - left[cur] < lower:
+                    lower_point += 1
+                while upper_point<len(right) and  right[upper_point] - left[cur] <= upper:
+                    upper_point += 1
+                cur += 1
+                # print(upper_point, lower_point)
+                res[0] += max(0, upper_point-lower_point)
+            # print('res:', res)
+
+            left.append(float('inf'))
+            right.append(float('inf'))
+            i, j = 0, 0
+            ret=[]
+            while len(ret)<length:
+                if left[i]<right[j]:
+                    ret.append(left[i])
+                    i+=1
+                else:
+                    ret.append(right[j])
+                    j+=1
+            return ret
+        res=[0]
+        mergesort(presum, res)
+        return res[0]
