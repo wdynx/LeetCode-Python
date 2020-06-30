@@ -1,0 +1,37 @@
+class Solution:
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
+        dic1 = {}
+        dic2 = {}
+        res = set()
+        for i in range(len(words)):
+            word = words[i]
+            appended_word = '#'+'#'.join([i for i in word])+'#'
+            for j in range(len(appended_word)//2):
+                if appended_word[:j]==appended_word[2*j:j:-1]:
+                    palindrome=''.join(appended_word[:2*j:-1].split('#'))
+                    if palindrome not in dic1:
+                        dic1[palindrome]=set()
+                    dic1[palindrome].add(i)
+                if appended_word[:-j-1:-1]==appended_word[-2*j-1:-j-1]:
+                    palindrome=''.join(appended_word[-2*j-1::-1].split('#'))
+                    if palindrome not in dic2:
+                        dic2[palindrome]=set()
+                    dic2[palindrome].add(i)
+            if appended_word[::-1]==appended_word:
+                if '' not in dic1:
+                    dic1['']=set()
+                dic1[''].add(i)
+                if '' not in dic2:
+                    dic2['']=set()
+                dic2[''].add(i)
+        # print(dic)
+        for i in range(len(words)):
+            if words[i] in dic1.keys():
+                for index in dic1[words[i]]:
+                    if i != index:
+                        res.add((i, index))
+            if words[i] in dic2.keys():
+                for index in dic2[words[i]]:
+                    if i != index:
+                        res.add((index, i))
+        return list(res)
