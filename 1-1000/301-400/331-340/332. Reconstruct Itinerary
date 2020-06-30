@@ -1,0 +1,28 @@
+class Solution:
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        def dfs(node, flight_map, length, path):
+            path.append(node)
+            if length != len(path):
+                if node in flight_map.keys():
+                    items=sorted(list(flight_map[node].items()), key=lambda x:x[0])
+                    for item in items:
+                        if item[1] > 0:
+                            flight_map[node][item[0]] -= 1
+                            dfs(item[0], flight_map, length, path)
+                            if length == len(path):
+                                return
+                            flight_map[node][item[0]] += 1
+                path.pop()
+            else:
+                return
+
+        flight_map={}
+        for ticket in tickets:
+            if ticket[0] not in flight_map.keys():
+                flight_map[ticket[0]] = {}
+            flight_map[ticket[0]][ticket[1]] = flight_map[ticket[0]].get(ticket[1], 0) + 1
+        
+        res=[]
+        dfs('JFK', flight_map, len(tickets)+1, res)
+        return res
+        
