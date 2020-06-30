@@ -1,0 +1,53 @@
+class SummaryRanges:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.dic={}
+        
+
+    def addNum(self, val: int) -> None:
+        if val in self.dic.keys():
+            return
+        if val-1 in self.dic.keys() and val+1 in self.dic.keys():
+            (a, b), (c, d) = self.dic[val-1], self.dic[val+1]
+            if b > val or c < val:
+                return
+            self.dic[a] = (a, d)
+            self.dic[d] = (a, d)
+            if a != b:
+                del self.dic[b]
+            if c != d:
+                del self.dic[c]
+        elif val-1 in self.dic.keys():
+            a, b = self.dic[val-1]
+            if b > val:
+                return
+            self.dic[a] = (a, val)
+            self.dic[val] = (a, val)
+            if a != b:
+                del self.dic[b]
+        elif val+1 in self.dic.keys():
+            a, b = self.dic[val+1]
+            if a < val:
+                return
+            self.dic[b] = (val, b)
+            self.dic[val] = (val, b)
+            if a != b:
+                del self.dic[a]
+        else:
+            self.dic[val]=(val,val)
+
+    def getIntervals(self) -> List[List[int]]:
+        intervals = sorted(list(set(self.dic.values())), key=lambda x:x[0])
+        res = []
+        for i in range(len(intervals)):
+            if not res or res[-1][1]<intervals[i][0]:
+                res.append(intervals[i])
+        return res
+
+# Your SummaryRanges object will be instantiated and called as such:
+# obj = SummaryRanges()
+# obj.addNum(val)
+# param_2 = obj.getIntervals()
