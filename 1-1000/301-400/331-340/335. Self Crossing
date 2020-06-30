@@ -1,0 +1,41 @@
+class Solution:
+    def isSelfCrossing(self, x: List[int]) -> bool:
+        def is_cross(step1, step2):
+            if step1[0][0] == step1[1][0]:
+                step1, step2 = step2, step1
+            if (step1[0][0]-step2[0][0])*(step1[1][0]-step2[0][0])<=0 and (step2[0][1]-step1[0][1])*(step2[1][1]-step1[0][1])<=0:
+                return True
+            return False
+        def is_same_line(step1, step2):
+            if step1[0][0]==step1[1][0]==step2[0][0]==step2[1][0]:
+                a, b, c, d = step1[0][1], step1[1][1], step2[0][1], step2[1][1]
+            elif step1[0][1]==step1[1][1]==step2[0][1]==step2[1][1]:
+                a, b, c, d = step1[0][0], step1[1][0], step2[0][0], step2[1][0]
+            else:
+                return False
+            if (a-c)*(b-c)<=0 or (a-d)*(b-d)<=0 or (c-a)*(d-a)<=0 or (c-b)*(d-b)<=0:
+                return True
+            return False 
+
+        path = []
+        cur_point = (0, 0)
+        dic={
+            0: lambda x, y: (x[0], x[1]+y),
+            1: lambda x, y: (x[0]-y, x[1]),
+            2: lambda x, y: (x[0], x[1]-y),
+            3: lambda x, y: (x[0]+y, x[1])
+        }
+        for i in range(len(x)):
+            next_point = dic[i%4](cur_point, x[i])
+            path.append((cur_point, next_point))
+            # print(path)
+            if len(path) >= 5 and is_same_line(path[-1], path[-5]):
+                return True
+            if len(path) >= 4 and is_cross(path[-1], path[-4]):
+                return True
+            if len(path) >= 6 and is_cross(path[-1], path[-6]):
+                return True
+            if len(path) == 8:
+                path.pop(0)
+            cur_point=next_point
+        return False
