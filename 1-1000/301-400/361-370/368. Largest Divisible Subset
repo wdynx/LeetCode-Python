@@ -1,0 +1,23 @@
+class Solution:
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        if len(nums)<=1:
+            return nums
+        nums.sort(reverse=True)
+        dp = [1] * len(nums)
+        path = list(range(len(nums)))
+        for i in range(len(nums)):
+            for j in range(i):
+                if nums[j] % nums[i] == 0:
+                    if dp[j] + 1 > dp[i]:
+                        dp[i] = dp[j] + 1
+                        path[i] = j
+        max_idx, max_val = 0, 0
+        for idx, val in enumerate(dp):
+            if val > max_val:
+                max_idx, max_val = idx, val
+        res = []
+        while path[max_idx] != max_idx:
+            res.append(nums[max_idx])
+            max_idx = path[max_idx]
+        res.append(nums[max_idx])
+        return res
