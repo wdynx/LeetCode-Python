@@ -1,0 +1,6 @@
+class Solution:
+    def superPow(self, a: int, b: List[int]) -> int:
+        while len(b)>1:
+            return ((a**b[-1])%1337 * self.superPow(a, b[:-1])**10)%1337
+        else:
+            return (a**b[0])%1337
