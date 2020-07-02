@@ -1,0 +1,28 @@
+import bisect
+class Solution:
+    def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
+        left = matrix[0][0]
+        right = matrix[-1][-1] + 1
+        pos_left = [0] * len(matrix)
+        pos_right = [len(matrix[0])] * len(matrix)
+        if k == 1:
+            return left
+        elif k == sum(pos_right):
+            return right - 1
+        while True:
+            mid = (left + right) // 2
+            pos_mid = []
+            # print(pos_left, pos_right)
+            for i in range(len(matrix)):
+                pos_mid.append(pos_left[i] + bisect.bisect_left(matrix[i][pos_left[i]: pos_right[i]], mid))
+            total_pos = sum(pos_mid)
+            if left + 1 == right:
+                return left
+            if total_pos == k:
+                return max(map(lambda x: matrix[x][pos_mid[x]-1],filter(lambda x: pos_mid[x]>0,range(len(matrix)))))
+            elif total_pos > k:
+                right = mid
+                pos_right = pos_mid
+            else:
+                left = mid
+                pos_left = pos_mid
