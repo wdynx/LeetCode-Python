@@ -1,0 +1,22 @@
+class Solution:
+    def lengthLongestPath(self, input: str) -> int:
+        path = []
+        length = 0
+        depth = 0
+        res = 0
+        inputs = input.split('\n')
+        for item in inputs:
+            cnt = 0
+            for i in item:
+                if i == '\t':
+                    cnt += 1
+                else:
+                    break
+            while len(path) > cnt:
+                last = path.pop()
+                length -= len(last) + 1
+            path.append(item.lstrip('\t'))
+            length += len(path[-1]) + 1
+            if length > res and '.' in path[-1]:
+                res = length
+        return max(0,res - 1)
