@@ -1,0 +1,31 @@
+class Solution:
+    def validUtf8(self, data: List[int]) -> bool:
+        # print(list(map(bin,data)))
+        while data:
+            sym = bin(data.pop(0))
+            sym = '{:>08}'.format(sym[2:])
+            # print(sym)
+            cnt = 0
+            if sym.startswith('0'):
+                continue
+            else:
+                for i in sym:
+                    if i == '1':
+                        cnt += 1
+                    else:
+                        break
+                if cnt == 1 or cnt>4:
+                    return False
+                else:
+                    # print(cnt)
+                    cnt -= 1
+                    while cnt > 0:
+                        cnt -= 1
+                        if not data:
+                            return False
+                        num = bin(data.pop(0))
+                        num = '{:>08}'.format(num[2:])
+                        # print(num)
+                        if not num.startswith('10'):
+                            return False
+        return cnt == 0
