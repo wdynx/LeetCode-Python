@@ -1,0 +1,12 @@
+import re
+from collections import Counter
+class Solution:
+    def longestSubstring(self, s: str, k: int) -> int:
+        if not s:
+            return 0
+        s_counter = Counter(s)
+        splits = '['+''.join(list(filter(lambda x: s_counter[x]<k, s_counter.keys())))+']'
+        if splits == '[]':
+            return len(s)
+        new_s = re.split(splits, s)
+        return max(map(lambda x: self.longestSubstring(x, k), new_s))
