@@ -1,0 +1,14 @@
+class Solution:
+    def maxRotateFunction(self, A: List[int]) -> int:
+        if not A:
+            return 0
+        Sum = sum(A)
+        n = len(A)
+        start = sum(map(lambda x: x[0]*x[1], zip(range(n), A)))
+        diffs = [(Sum - n*elem) for elem in A[::-1]]
+        res = start
+        for diff in diffs:
+            start += diff
+            if start > res:
+                res = start
+        return res
