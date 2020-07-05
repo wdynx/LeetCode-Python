@@ -1,0 +1,15 @@
+class Solution:
+    def findNthDigit(self, n: int) -> int:
+        start, end = 0, 0
+        start_num = 1
+        digits = 0
+        num = 9
+        while end < n:
+            start_num = 10**digits
+            digits += 1
+            start = end + 1
+            end += num * digits
+            num *= 10
+        cnt, pos = divmod(n-start, digits)
+        start_num += cnt
+        return str(start_num)[pos]
