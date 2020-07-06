@@ -1,0 +1,13 @@
+class Solution:
+    def readBinaryWatch(self, num: int) -> List[str]:
+        num_dic = dict(zip(range(6), [set() for _ in range(6)]))
+        for i in range(60):
+            cnt = bin(i).count('1')
+            num_dic[cnt].add(i)
+        res = []
+        for i in range(max(0, num-5), min(4,num+1)):
+            for hour in num_dic[i]:
+                if hour < 12:
+                    for minute in num_dic[num-i]:
+                        res.append('{}:{:0>2}'.format(hour, minute))
+        return res
