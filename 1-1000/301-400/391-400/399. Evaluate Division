@@ -1,0 +1,49 @@
+class Solution:
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        def findRoot(unions, key):
+            path = []
+            times = []
+            cur = key
+            root = unions[key][0]
+            while cur != root:
+                path.append(cur)
+                times.append(unions[cur][1])
+                cur = root
+                root = unions[cur][0]
+            for i in range(1, len(times)):
+                times[-i-1] *= times[-i]
+            for i in range(len(path)):
+                unions[path[i]][0] = root
+                unions[path[i]][1] = times[i]
+            return root, times[0] if times else 1
+        unions = {}
+        for equation in equations:
+            unions[equation[0]] = [equation[0], 1]#上级，上级是当前的多少倍
+            unions[equation[1]] = [equation[1], 1]
+        # print(unions)
+        for i in range(len(equations)):
+            root1, time1 = findRoot(unions, equations[i][0])
+            root2, time2 = findRoot(unions, equations[i][1])
+            # print(unions, root1, time1, root2, time2)
+            if root1 == root2:
+                continue
+            # elif ord(root1[0]) < ord(root2[0]):
+            #     unions[root2][0] = root1
+            #     unions[root2][1] = values[i]*time1/time2
+            else:
+                unions[root1][0] = root2
+                unions[root1][1] = time2/time1/values[i]
+        # print(unions)
+        res = []
+        for query in queries:
+            if query[0] not in unions.keys() or query[1] not in unions.keys():
+                res.append(-1)
+                continue
+            root1, time1 = findRoot(unions, query[0])
+            root2, time2 = findRoot(unions, query[1])
+            # print(unions, root1, time1, root2, time2)
+            if root1 != root2:
+                res.append(-1)
+            else:
+                res.append(time2/time1)
+        return res
