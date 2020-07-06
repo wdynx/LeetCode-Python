@@ -1,0 +1,16 @@
+class Solution:
+    def addStrings(self, num1: str, num2: str) -> str:
+        if len(num1) < len(num2):
+            num1, num2 = num2, num1
+        flag = 0
+        res = []
+        for i in range(len(num1)):
+            n = ord(num1[-i-1]) - ord('0') + ((ord(num2[-i-1]) - ord('0')) if i < len(num2) else 0) + flag
+            flag = n // 10
+            n = n % 10
+            res.append(chr(n + ord('0')))
+        res.append(str(flag))
+        while len(res) > 1 and res[-1] == '0':
+            res.pop()
+        res.reverse()
+        return ''.join(res)
