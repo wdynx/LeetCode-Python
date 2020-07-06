@@ -1,0 +1,23 @@
+class Solution:
+    def toHex(self, num: int) -> str:
+        if num<0:
+            num += 2**32
+        Hex = []
+        dic = {
+            10: 'a',
+            11: 'b',
+            12: 'c',
+            13: 'd',
+            14: 'e',
+            15: 'f',
+        }
+        while num:
+            num, mod = divmod(num, 16)
+            if mod<10:
+                Hex.append(str(mod))
+            else:
+                Hex.append(dic[mod])
+        Hex.reverse()
+        if not Hex:
+            return '0'
+        return ''.join(Hex)
