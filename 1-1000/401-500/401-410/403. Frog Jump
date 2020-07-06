@@ -1,0 +1,12 @@
+class Solution:
+    def canCross(self, stones: List[int]) -> bool:
+        jump_dic = {0: {1}}
+        for stone in stones[1:]:
+            cur = set()
+            for item in jump_dic.items():
+                if stone - item[0] in item[1]:
+                    cur |= {stone - item[0] - 1, stone - item[0], stone - item[0] + 1}
+            cur -= {0}
+            jump_dic[stone] = cur
+            # print(jump_dic)
+        return bool(jump_dic[stones[-1]])
