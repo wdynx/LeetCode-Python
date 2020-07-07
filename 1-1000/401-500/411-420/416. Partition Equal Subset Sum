@@ -1,0 +1,17 @@
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        Sum = sum(nums)
+        if Sum%2==1:
+            return False
+        target = Sum//2
+        dp = [[False]*len(nums) for _ in range(1+target)]
+        for j in range(len(nums)):
+            for i in range(1+target):
+                if j == 0:
+                    if i == 0 or i == nums[j]:
+                        dp[i][j] = True
+                else:
+                    if i - nums[j] >= 0 and dp[i-nums[j]][j-1] or dp[i][j-1]:
+                        dp[i][j] = True
+        # print(dp)
+        return dp[-1][-1]
