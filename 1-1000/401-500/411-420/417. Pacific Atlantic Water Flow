@@ -1,0 +1,33 @@
+class Solution:
+    def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]:
+        def neighbors(point, height, width):
+            res = set()
+            if point[0] > 0:
+                res.add((point[0]-1, point[1]))
+            if point[0] < height-1:
+                res.add((point[0]+1, point[1]))
+            if point[1] > 0:
+                res.add((point[0], point[1]-1))
+            if point[1] < width-1:
+                res.add((point[0], point[1]+1))
+            return res
+
+        def bfs(left, matrix):
+            while True:
+                Add = set()
+                for point in left:
+                    for neighbor in neighbors(point, len(matrix), len(matrix[0])):
+                        if neighbor not in left and matrix[neighbor[0]][neighbor[1]]>=matrix[point[0]][point[1]]:
+                            Add.add(neighbor)
+                if not Add:
+                    return
+                else:
+                    left |= Add
+
+        if not matrix:
+            return []
+        left = set([(i, 0) for i in range(len(matrix))]) | set([(0, j) for j in range(len(matrix[0]))])
+        right = set([(i, len(matrix[0])-1) for i in range(len(matrix))]) | set([(len(matrix)-1, j) for j in range(len(matrix[0]))])
+        bfs(left, matrix)
+        bfs(right, matrix)
+        return left & right
