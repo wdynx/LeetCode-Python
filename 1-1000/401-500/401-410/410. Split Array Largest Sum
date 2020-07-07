@@ -1,0 +1,23 @@
+class Solution:
+    def splitArray(self, nums: List[int], m: int) -> int:
+        def judge(val, nums, m):
+            cnt = 1
+            cur = 0
+            for num in nums:
+                if num > val:
+                    return False
+                if cur + num <= val:
+                    cur += num
+                else:
+                    cur = num
+                    cnt += 1
+            return cnt <= m
+        up = sum(nums)
+        down = max(nums)-1
+        while up - down >1:
+            mid = (up + down) // 2
+            if judge(mid, nums, m):
+                up = mid
+            else:
+                down = mid
+        return up
