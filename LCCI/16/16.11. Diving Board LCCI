@@ -1,0 +1,7 @@
+class Solution:
+    def divingBoard(self, shorter: int, longer: int, k: int) -> List[int]:
+        if k == 0:
+            return []
+        elif shorter == longer:
+            return [shorter*k]
+        return list(range(k*shorter, (k+1)*longer-shorter, longer-shorter))
