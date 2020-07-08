@@ -1,0 +1,18 @@
+from collections import Counter
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        distances = [[0]*len(points) for _ in range(len(points))]
+        for i in range(len(points)):
+            for j in range(len(points)):
+                if i == j:
+                    continue
+                elif i > j:
+                    distances[i][j] = distances[j][i]
+                else:
+                    distances[i][j] = (points[i][0] - points[j][0])**2 + (points[i][1] - points[j][1])**2
+        res = 0
+        for i in range(len(points)):
+            cnt = Counter(distances[i])
+            for val in cnt.values():
+                res += val*(val-1)
+        return res
