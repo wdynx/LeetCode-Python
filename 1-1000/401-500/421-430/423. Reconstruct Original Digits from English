@@ -1,0 +1,29 @@
+from collections import Counter
+class Solution:
+    def originalDigits(self, s: str) -> str:
+        num_list = [
+            ('z', 0, {'z': 1, 'e': 1, 'r': 1, 'o': 1}),
+            ('w', 2, {'t': 1, 'w': 1, 'o': 1}),
+            ('x', 6, {'s': 1, 'i': 1, 'x': 1}),
+            ('u', 4, {'f': 1, 'o': 1, 'u': 1, 'r': 1}),
+            ('f', 5, {'f': 1, 'i': 1, 'v': 1, 'e': 1}),
+            ('o', 1, {'o': 1, 'n': 1, 'e': 1}),
+            ('r', 3, {'t': 1, 'h': 1, 'r': 1, 'e': 2}),
+            ('s', 7, {'s': 1, 'e': 2, 'v': 1, 'n': 1}),
+            ('t', 8, {'e': 1, 'i': 1, 'g': 1, 'h': 1, 't': 1}),
+            ('i', 9, {'n': 2, 'i': 1, 'e': 1})
+        ]
+        cnt = Counter(s)
+        nums = dict(zip(range(0, 10), [0]*10))
+        for item in num_list:
+            if item[0] in cnt.keys():
+                nums[item[1]] += cnt[item[0]]
+                for subitem in item[2].items():
+                    cnt[subitem[0]] -= subitem[1]*nums[item[1]]
+                    if cnt[subitem[0]] == 0:
+                        del cnt[subitem[0]]
+        res = ''
+        # print(nums)
+        for num in nums.items():
+            res += str(num[0])*num[1]
+        return res
