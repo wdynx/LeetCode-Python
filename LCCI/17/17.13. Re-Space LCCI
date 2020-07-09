@@ -1,0 +1,44 @@
+class Solution:
+    def respace(self, dictionary: List[str], sentence: str) -> int:
+        trie = Trie()
+        for word in dictionary:
+            trie.build(word)
+        # print(trie)
+
+        dp = [float('inf')]*(len(sentence)+1)
+        for i in range(len(dp)):
+            dp[i] = min(dp[i], ((dp[i-1] +1) if i>0 else 0))
+            ends = trie.find(sentence, i)
+            # print(i, ends)
+            for end in ends:
+                dp[end] = min(dp[end], dp[i])
+        # print(dp)
+        return dp[-1]
+
+class Trie:
+    def __init__(self):
+        self.trie = {}
+
+    def build(self, word):
+        root = self.trie
+        for i in word:
+            if i not in root.keys():
+                root[i] = {}
+            root = root[i]
+        root[0] = None
+
+    def find(self, sentence, pos):
+        res = []
+        root = self.trie
+        while pos < len(sentence):
+            if sentence[pos] not in root.keys():
+                break
+            else:
+                root = root[sentence[pos]]
+                pos += 1
+            if 0 in root.keys():
+                res.append(pos)
+        return res
+
+    def __str__(self):
+        return str(self.trie)
