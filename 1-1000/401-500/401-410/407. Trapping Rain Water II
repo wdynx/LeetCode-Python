@@ -1,0 +1,48 @@
+import heapq
+class Solution:
+    def trapRainWater(self, heightMap: List[List[int]]) -> int:
+        def getNeighbor(node, heightMap):
+            neighbors = set()
+            if node[1] > 0:
+                neighbors.add((heightMap[node[1]-1][node[2]], node[1]-1, node[2]))
+            if node[1] < len(heightMap)-1:
+                neighbors.add((heightMap[node[1]+1][node[2]], node[1]+1, node[2]))
+            if node[2] > 0:
+                neighbors.add((heightMap[node[1]][node[2]-1], node[1], node[2]-1))
+            if node[2] < len(heightMap[0])-1:
+                neighbors.add((heightMap[node[1]][node[2]+1], node[1], node[2]+1))
+            return neighbors
+
+        if len(heightMap)<=2 or len(heightMap[0])<=2:
+            return 0
+        stack = set()
+        nodes = set()
+        for i in range(1, len(heightMap)-1):
+            for j in range(1, len(heightMap[0])-1):
+                nodes.add((i, j))
+        # print(nodes)
+        for i in range(len(heightMap)):
+            stack.add((heightMap[i][0], i, 0))
+            stack.add((heightMap[i][-1], i, len(heightMap[0])-1))
+        for i in range(len(heightMap[0])):
+            stack.add((heightMap[0][i], 0, i))
+            stack.add((heightMap[-1][i], len(heightMap)-1, i))
+        # print(stack)
+        stack = list(stack)
+        heapq.heapify(stack)
+        # while stack:
+        #     print(heapq.heappop(stack))
+        res = 0
+        while nodes:
+            node = heapq.heappop(stack)
+            neighbors = getNeighbor(node, heightMap)
+            # print(neighbors)
+            for neighbor in neighbors:
+                if (neighbor[1], neighbor[2]) in nodes:
+                    # print(neighbor)
+                    nodes.remove((neighbor[1], neighbor[2]))
+                    if neighbor[0] < node[0]:
+                        res += node[0] - neighbor[0]
+                    heapq.heappush(stack, (max(node[0], neighbor[0]), neighbor[1], neighbor[2]))
+            # print(node, res)
+        return res
