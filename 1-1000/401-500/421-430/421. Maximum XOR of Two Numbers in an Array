@@ -1,0 +1,15 @@
+class Solution:
+    def findMaximumXOR(self, nums: List[int]) -> int:
+        length = max(map(lambda x: len(bin(x)), nums)) - 2
+        res = 0
+        for i in range(length-1, -1, -1):
+            newnums = {num >> i for num in nums}
+            res = (res << 1) + 1
+            flag = False
+            for num in newnums:
+                if res ^ num in newnums:
+                    flag = True
+                    break
+            if flag == False:
+                res -= 1
+        return res
