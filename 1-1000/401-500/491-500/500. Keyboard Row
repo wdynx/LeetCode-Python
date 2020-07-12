@@ -1,0 +1,23 @@
+class Solution:
+    def findWords(self, words: List[str]) -> List[str]:
+        lines = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM']
+        set1 = set(lines[0])
+        set2 = set(lines[1])
+        set3 = set(lines[2])
+        res = []
+        for word in words:
+            up_word = word.upper()
+            if up_word[0] in set1:
+                cur_set = set1
+            elif up_word[0] in set2:
+                cur_set = set2
+            else:
+                cur_set = set3
+            flag = True
+            for i in up_word[1:]:
+                if i not in cur_set:
+                    flag = False
+                    break
+            if flag:
+                res.append(word)
+        return res
