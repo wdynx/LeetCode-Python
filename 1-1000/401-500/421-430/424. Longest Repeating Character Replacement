@@ -1,0 +1,47 @@
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        if not s:
+            return 0
+        nums = []
+        last = s[0]
+        s += '1'
+        cnt = 0
+        for i in s:
+            if i == last:
+                cnt += 1
+            else:
+                nums.append((last, cnt))
+                cnt = 1
+                last = i
+        dic = {}
+        pos = 0
+        for num in nums:
+            if num[0] not in dic.keys():
+                dic[num[0]] = []
+            dic[num[0]].append((pos, pos + num[1]))
+            pos += num[1]
+        res = 0
+        for _, pos in dic.items():
+            # print(pos)
+            elems = [pos[0][1]-pos[0][0]]
+            gap = []
+            cur = elems[0]
+            if cur > res:
+                res = cur
+            gap_sum = 0
+            # print(pos)
+            for i in range(1, len(pos)):
+                cur_gap = pos[i][0] - pos[i-1][1]
+                cur_elem = pos[i][1] - pos[i][0]
+                gap.append(cur_gap)
+                elems.append(cur_elem)
+                gap_sum += cur_gap
+                cur += cur_elem
+                # print(cur)
+                while gap_sum > k:
+                    # print(gap_sum)
+                    gap_sum -= gap.pop(0)
+                    cur -= elems.pop(0)
+                if cur > res:
+                    res = cur
+        return min(len(s)-1, res+k)
