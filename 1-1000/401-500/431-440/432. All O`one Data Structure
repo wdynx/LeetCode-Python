@@ -1,0 +1,125 @@
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.keys = set()
+        self.lst = None
+        self.nxt = None
+
+class AllOne:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.head = Node(-1)
+        self.rear = Node(float('inf'))
+        self.head.nxt = self.rear
+        self.rear.lst = self.head
+        self.cnt_dic = {} # {key: cnt}
+        self.idx = {} # {cnt: Node}
+
+    def inc(self, key: str) -> None:
+        """
+        Inserts a new key <Key> with value 1. Or increments an existing key by 1.
+        """
+        if key not in self.cnt_dic.keys():
+            self.cnt_dic[key] = 1
+            if 1 not in self.idx.keys():
+                node = Node(1)
+                node.keys.add(key)
+                node.lst = self.head
+                node.nxt = self.head.nxt
+                self.head.nxt.lst = node
+                self.head.nxt = node
+                self.idx[1] = node
+            else:
+                node = self.idx[1]
+                node.keys.add(key)
+        else:
+            old_cnt = self.cnt_dic[key]
+            new_cnt = old_cnt + 1
+            old_node = self.idx[old_cnt]
+            if new_cnt not in self.idx.keys():
+                node = Node(new_cnt)
+                node.keys.add(key)
+                node.lst = old_node
+                node.nxt = old_node.nxt
+                old_node.nxt.lst = node
+                old_node.nxt = node
+                self.idx[new_cnt] = node
+            else:
+                node = self.idx[new_cnt]
+                node.keys.add(key)
+            old_node.keys.remove(key)
+            if not old_node.keys:
+                old_node.lst.nxt = old_node.nxt
+                old_node.nxt.lst = old_node.lst
+                del self.idx[old_cnt]
+            self.cnt_dic[key] += 1
+
+
+    def dec(self, key: str) -> None:
+        """
+        Decrements an existing key by 1. If Key's value is 1, remove it from the data structure.
+        """
+        if key not in self.cnt_dic.keys():
+            return
+        if self.cnt_dic[key] == 1:
+            node = self.idx[1]
+            node.keys.remove(key)
+            if not node.keys:
+                self.head.nxt = node.nxt
+                self.head.nxt.lst = self.head
+                del self.idx[1]
+            del self.cnt_dic[key]
+        else:
+            old_cnt = self.cnt_dic[key]
+            new_cnt = old_cnt - 1
+            old_node = self.idx[old_cnt]
+            if new_cnt not in self.idx.keys():
+                node = Node(new_cnt)
+                node.keys.add(key)
+                node.nxt = old_node
+                node.lst = old_node.lst
+                old_node.lst.nxt = node
+                old_node.lst = node
+                self.idx[new_cnt] = node
+            else:
+                node = self.idx[new_cnt]
+                node.keys.add(key)
+            old_node.keys.remove(key)
+            if not old_node.keys:
+                old_node.lst.nxt = old_node.nxt
+                old_node.nxt.lst = old_node.lst
+                del self.idx[old_cnt]
+            self.cnt_dic[key] -= 1
+
+    def getMaxKey(self) -> str:
+        """
+        Returns one of the keys with maximal value.
+        """
+        if self.rear.lst == self.head:
+            return ''
+        else:
+            for key in self.rear.lst.keys:
+                return key
+
+
+    def getMinKey(self) -> str:
+        """
+        Returns one of the keys with Minimal value.
+        """
+        if self.head.nxt == self.rear:
+            return ''
+        else:
+            for key in self.head.nxt.keys:
+                return key
+
+
+
+# Your AllOne object will be instantiated and called as such:
+# obj = AllOne()
+# obj.inc(key)
+# obj.dec(key)
+# param_3 = obj.getMaxKey()
+# param_4 = obj.getMinKey()
