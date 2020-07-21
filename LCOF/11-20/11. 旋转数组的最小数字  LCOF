@@ -1,0 +1,16 @@
+class Solution:
+    def minArray(self, numbers: List[int]) -> int:
+        def helper(numbers, left, right):
+            if right - left <4:
+                return min(numbers)
+            if numbers[left]<numbers[right-1]:
+                return numbers[left]
+            else:
+                mid = (left + right) // 2
+                if numbers[mid] > numbers[left]:
+                    return helper(numbers, mid+1, right)
+                elif numbers[mid] < numbers[right-1]:
+                    return helper(numbers, left, mid+1)
+                else:
+                    return min(helper(numbers, left, mid), helper(numbers, mid, right))
+        return helper(numbers, 0, len(numbers))
