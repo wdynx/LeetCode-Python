@@ -1,0 +1,24 @@
+class Solution:
+    def findKthNumber(self, n: int, k: int, lim=9) -> int:
+        #if n <= lim:
+        #    return k-int(lim!=9)
+        ls = [0] * lim
+        i = 0
+        contain = 1
+        while n > contain:
+            ls[i] += contain
+            n -= contain
+            i += 1
+            if i == lim:
+                i = 0
+                contain *= 10
+        ls[i] += n
+        #print(ls)
+        for i in range(lim):
+            if k > ls[i]:
+                k -= ls[i]
+            else:
+                break
+        if k==1:
+            return i+1 if lim==9 else str(i)
+        return int(str(i+1) + self.findKthNumber(ls[i]-1, k-1, 10)) if lim ==9 else str(i)+self.findKthNumber(ls[i]-1, k-1, 10)
