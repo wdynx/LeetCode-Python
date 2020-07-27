@@ -1,0 +1,13 @@
+from collections import Counter
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:    
+        l = len(p)
+        dic = Counter(p)
+        if len(s) < l:
+            return []
+        res = []
+        for i in range(len(s)-l+1):
+            cur = Counter(s[i: i+l])
+            if cur == dic:
+                res.append(i)
+        return res
