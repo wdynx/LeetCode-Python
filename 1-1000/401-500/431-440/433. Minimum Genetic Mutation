@@ -1,0 +1,29 @@
+class Solution:
+    def minMutation(self, start: str, end: str, bank: List[str]) -> int:
+        def change(s1, s2):
+            cnt = 0
+            for i in range(8):
+                if s1[i] != s2[i]:
+                    cnt += 1
+            return cnt == 1
+        if start == end:
+            return 0
+        bank = set(bank) - {start}
+        if end not in bank:
+            return -1
+        neighbor = set()
+        neighbor = {start}
+        cnt = 0
+        while neighbor:
+            cnt += 1
+            next_neighbor = set()
+            for node in neighbor:
+                for poss in bank:
+                    if poss not in next_neighbor:
+                        if change(poss, node):
+                            next_neighbor.add(poss)
+            bank -= next_neighbor
+            neighbor = next_neighbor
+            if end in neighbor:
+                return cnt
+        return -1
