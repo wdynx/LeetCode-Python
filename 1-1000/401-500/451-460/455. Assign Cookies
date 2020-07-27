@@ -1,0 +1,11 @@
+class Solution:
+    def findContentChildren(self, g: List[int], s: List[int]) -> int:
+        g.sort()
+        s.sort()
+        pos = 0
+        for i in s:
+            if i >= g[pos]:
+                pos += 1
+                if pos == len(g):
+                    break
+        return pos
