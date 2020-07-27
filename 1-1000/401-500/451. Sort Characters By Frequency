@@ -1,0 +1,9 @@
+from collections import Counter
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        cnt = Counter(s)
+        ls = sorted(list(cnt.keys()), key=lambda x: -cnt[x])
+        res = ''
+        for i in ls:
+            res += i*cnt[i]
+        return res
