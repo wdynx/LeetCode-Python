@@ -1,0 +1,15 @@
+class Solution:
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
+        points.sort(key=lambda x: x[0])
+        stack = []
+        for point in points:
+            while stack and stack[-1][1] >= point[1]:
+                stack.pop()
+            stack.append(point)          
+        res = 0
+        x = -float('inf')
+        for point in stack:
+            if x < point[0]:
+                x = point[1]
+                res += 1
+        return res
