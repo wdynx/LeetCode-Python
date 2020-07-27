@@ -1,0 +1,9 @@
+class Solution:
+    def numberOfArithmeticSlices(self, A: List[int]) -> int:
+        dic = {}
+        n = len(A)
+        for i in range(n):
+            for j in range(i):
+                dic[(i, A[j]-A[i])] = dic.get((i, A[j]-A[i]), 0) + dic.get((j, A[j]-A[i]), 0)+1
+        #print(dic)
+        return sum(dic.values()) - n*(n-1)//2
