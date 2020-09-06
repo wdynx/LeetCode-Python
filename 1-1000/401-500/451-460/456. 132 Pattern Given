@@ -1,0 +1,20 @@
+class Solution:
+    def find132pattern(self, nums: List[int]) -> bool:
+        minstack = []
+        for num in nums:
+            if not minstack or num < minstack[-1]:
+                minstack.append(num)
+            else:
+                minstack.append(minstack[-1])
+        stack = []
+        for i in range(len(nums)-1, -1, -1):
+            if not stack or stack[-1] >= nums[i]:
+                stack.append(nums[i])
+            else:
+                while stack and stack[-1] < nums[i]:
+                    if minstack[i] < stack[-1] < nums[i]:
+                        return True
+                    else:
+                        stack.pop()
+                stack.append(nums[i])
+        return False
