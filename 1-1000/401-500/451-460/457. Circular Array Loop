@@ -1,0 +1,24 @@
+class Solution:
+    def circularArrayLoop(self, nums: List[int]) -> bool:
+        n = len(nums)
+        if n < 2:
+            return False
+        pos_cir = list(map(lambda x: max(x, 0)%n, nums))
+        neg_cir = list(map(lambda x: -min(x, 0)%n, nums))[::-1]
+        # print(pos_cir)
+        # print(neg_cir)
+        def helper(circle, n):
+            rest_set = set(range(n))
+            for i in range(n):
+                cur_set = set()
+                while True:
+                    rest_set -= {i}
+                    cur_set.add(i)
+                    if circle[i] == 0:
+                        break
+                    else:
+                        i = (i+circle[i])%n
+                        if i in cur_set:
+                            return True
+            return False
+        return helper(pos_cir, n) or helper(neg_cir, n)
