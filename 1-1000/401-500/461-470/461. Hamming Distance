@@ -1,0 +1,12 @@
+class Solution:
+    def hammingDistance(self, x: int, y: int) -> int:
+        binx = bin(x)[2:]
+        biny = bin(y)[2:]
+        if len(binx) < len(biny):
+            binx = '0'*(len(biny)-len(binx)) + binx
+        else:
+            biny = '0'*(len(binx)-len(biny)) + biny
+        res = 0
+        for i in range(max(len(binx), len(biny))):
+            res += int(binx[-1-i] != biny[-1-i])
+        return res
