@@ -1,0 +1,98 @@
+from collections import OrderedDict
+
+class ListNode:
+    def __init__(self, val):
+        self.val = val
+        self.od = OrderedDict()
+        self.nxt = None
+        self.lst = None
+
+    def remove(self, key):
+        del self.od[key]
+
+    def add(self, key):
+        self.od[key] = key
+    
+    def __len__(self):
+        return len(self.od)
+
+class LFUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.length = 0
+        self.dic = {}# key-val
+        self.freq = {}# key-frq
+        self.pos = {}# frq-node
+        self.ls = ListNode(-1)
+
+    def get(self, key: int) -> int:
+        if key not in self.dic.keys():
+            return -1
+        else:
+            val = self.dic[key]
+            frq = self.freq[key]
+            self.add(frq+1, key)
+            self.remove(frq, key)
+            self.freq[key] += 1
+            return val
+
+    def put(self, key: int, value: int) -> None:
+        if key not in self.dic:
+            if self.capacity > self.length:
+                self.length += 1
+            else:
+                if self.length == 0:
+                    return
+                node = self.ls.nxt
+                k, _ = node.od.popitem(False)
+                del self.dic[k]
+                del self.freq[k]
+                if len(node) == 0:
+                    del self.pos[node.val]
+                    self.ls.nxt = node.nxt
+                    if node.nxt:
+                        node.nxt.lst = self.ls
+            frq = 0
+            self.freq[key] = 1
+        else:
+            frq = self.freq[key]
+            self.freq[key] += 1
+        self.add(frq+1, key)
+        if frq:
+            self.remove(frq, key)
+        self.dic[key] = value
+
+    def remove(self, frq, key):
+        node = self.pos[frq]
+        node.remove(key)
+        if len(node) == 0:
+            node.lst.nxt = node.nxt
+            if node.nxt:
+                node.nxt.lst = node.lst
+            node.lst = None
+            node.nxt = None
+            del self.pos[frq]
+
+    def add(self, frq, key):
+        if frq in self.pos:
+            node = self.pos[frq]
+        else:
+            node = ListNode(frq)
+            self.pos[frq] = node
+            if frq == 1:
+                last = self.ls
+            else:
+                last = self.pos[frq-1]
+            node.nxt = last.nxt
+            node.lst = last
+            if last.nxt:
+                last.nxt.lst = node
+            last.nxt = node
+        node.add(key)
+
+
+# Your LFUCache object will be instantiated and called as such:
+# obj = LFUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
